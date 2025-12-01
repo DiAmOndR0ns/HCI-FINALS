@@ -262,9 +262,9 @@
             </div>
             <nav class="nav-links">
                 <ul>
-                    <li class="active"><a href="#"><i class="fas fa-th-large"></i> Dashboard</a></li>
-                    <li><a href="#" class="manage-users-link"><i class="fas fa-users"></i> Manage Users</a></li>
-                    <li><a href="#"><i class="fas fa-capsules"></i> Medicine</a></li>
+                    <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
+                    <li class="active"><a href="manage-users.html" class="manage-users-link"><i class="fas fa-users"></i> Manage Users</a></li>
+                    <li><a href="medicine.html"><i class="fas fa-capsules"></i> Medicine</a></li>
                     <li><a href="#"><i class="fas fa-shopping-cart"></i> Purchase</a></li>
                     <li><a href="#"><i class="fas fa-tags"></i> Sale</a></li>
                     <li><a href="#"><i class="fas fa-box"></i> Items</a></li>
@@ -384,38 +384,20 @@
     </div>
 
     <script>
-        // Simple JavaScript to switch between the two views
-        const dashboardLink = document.querySelector('.nav-links li.active a');
-        const usersLink = document.querySelector('.manage-users-link');
-        const dashboardView = document.getElementById('dashboard-view');
-        const usersView = document.getElementById('users-view');
-        const sidebarLinks = document.querySelectorAll('.nav-links li');
-
-        // Function to handle link clicks
-        function switchView(viewToShow, activeLink) {
-            // Hide all views
-            dashboardView.style.display = 'none';
-            usersView.style.display = 'none';
-
-            // Show the selected view
-            viewToShow.style.display = 'block';
-
-            // Update active state in sidebar
-            sidebarLinks.forEach(li => li.classList.remove('active'));
-            activeLink.closest('li').classList.add('active');
-        }
-
-        // Event listener for Dashboard link
-        dashboardLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            switchView(dashboardView, dashboardLink);
-        });
-
-        // Event listener for Manage Users link
-        usersLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            switchView(usersView, usersLink);
-        });
+        // Highlight active sidebar link based on filename
+        (function(){
+            const links = document.querySelectorAll('.nav-links a');
+            const current = location.pathname.split('/').pop() || 'dashboard.html';
+            links.forEach(a => {
+                const href = a.getAttribute('href');
+                if (!href) return;
+                if (href === current) {
+                    a.closest('li').classList.add('active');
+                } else {
+                    a.closest('li').classList.remove('active');
+                }
+            });
+        })();
     </script>
 </body>
 </html>
