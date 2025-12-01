@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pharmacy Inventory Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 
     <style>
         /* Basic Reset */
@@ -27,8 +28,7 @@
 
         /* --- 2. Sidebar Styling --- */
         .sidebar {
-            background-color: #555555;
-            color: white;
+            /* now styled globally via style.css palette; keep padding */
             padding-top: 20px;
         }
 
@@ -98,9 +98,6 @@
             height: 70%;
             background-color: #b8c4ae;
             mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm289-106.6C321.4 126.9 352 135.9 352 176c0 31.8-11.8 45-20.5 56.4c-4.9 6.2-9.2 12.8-13 19.8c-20 37.9-20 84.1-20 122.9V416H184V375c0-38.9 0-85.1-20-122.9c-3.8-7-8.1-13.6-13-19.8C140 221 128 207.8 128 176c0-40.1 30.6-49.1 63-76.8c32.4-27.7 77-27.7 109.4 0zm10.7-33.4C261 144.3 226.7 144.3 200 171.8c-26.7 27.5-63 24.3-63 60.2c0 14.5 4.3 25.1 8.8 33.3c7.2 13.1 16.5 25.5 27.8 36.8c11.3 11.3 23.7 20.6 36.8 27.8c8.2 4.5 18.8 8.8 33.3 8.8h.2c1.7 0 3.4 0 5.1-.1v-48c0-13.3 10.7-24 24-24s24 10.7 24 24v48c1.7 0 3.4 0 5.1.1h.2c14.5 0 25.1-4.3 33.3-8.8c13.1-7.2 25.5-16.5 36.8-27.8c11.3-11.3 20.6-23.7 27.8-36.8c4.5-8.2 8.8-18.8 8.8-33.3c0-35.9-36.3-32.7-63-60.2c-26.7-27.5-61-27.5-87.7 0z"/></svg>');
-            mask-repeat: no-repeat;
-            mask-size: contain;
-            mask-position: center;
             opacity: 0.4;
             pointer-events: none;
         }
@@ -131,6 +128,7 @@
 
         /* --- 6. Medicine Inventory Table Styles --- */
         .medicine-header {
+            font-family: "French Script MT", cursive;
             text-align: center;
             font-size: 2.5em;
             font-weight: bold;
@@ -165,17 +163,15 @@
             white-space: nowrap; /* Prevent headers from wrapping */
         }
         
-        /* Specific column width adjustments based on image */
-        .medicine-table th:nth-child(1) { width: 5%; } /* Checkbox */
-        .medicine-table th:nth-child(2) { width: 25%; } /* Product */
-        .medicine-table th:nth-child(3) { width: 10%; } /* Str/Form */
-        .medicine-table th:nth-child(4) { width: 15%; } /* NDC/Pkg */
-        .medicine-table th:nth-child(5) { width: 15%; } /* Lot/Exp */
-        .medicine-table th:nth-child(6) { width: 10%; } /* Prgm/Loc */
-        .medicine-table th:nth-child(7) { width: 5%; text-align: right;} /* Qty */
-        .medicine-table th:nth-child(8) { width: 5%; } /* UoM */
-        .medicine-table th:nth-child(9) { width: 5%; text-align: right;} /* Delta */
-        .medicine-table th:nth-child(10) { width: 5%; } /* Note */
+        /* Column widths for the simplified medicine table */
+        .medicine-table th:nth-child(1) { width: 4%; } /* Checkbox */
+        .medicine-table th:nth-child(2) { width: 28%; } /* Product */
+        .medicine-table th:nth-child(3) { width: 34%; } /* Description */
+        .medicine-table th:nth-child(4) { width: 10%; } /* Price */
+        .medicine-table th:nth-child(5) { width: 8%; } /* UoM */
+        .medicine-table th:nth-child(6) { width: 8%; text-align: right;} /* Qty */
+        .medicine-table th:nth-child(7) { width: 5%; text-align: right;} /* Delta */
+        .medicine-table th:nth-child(8) { width: 3%; } /* Note */
 
         .medicine-table td {
             padding: 5px 8px;
@@ -238,16 +234,18 @@
         <aside class="sidebar">
             <div class="user-profile">
                 <div class="avatar-placeholder"></div>
-                <p>Employee 1</p>
+                <div style="display:flex;flex-direction:column;">
+                    <p id="userDisplay">Employee 1</p>
+                    <a href="#" id="logoutLink" style="color:#ddd; font-size:0.85em; text-decoration:none; margin-top:4px;">Logout</a>
+                </div>
             </div>
             <nav class="nav-links">
                 <ul>
                     <li><a href="dashboard.html" class="dashboard-link"><i class="fas fa-th-large"></i> Dashboard</a></li>
                     <li><a href="manage-users.html" class="manage-users-link"><i class="fas fa-users"></i> Manage Users</a></li>
-                    <li class="active"><a href="medicine.html" class="medicine-link"><i class="fas fa-capsules"></i> Medicine</a></li>
+                    <li class="active"><a href="medicine.html" class="medicine-link"><i class="fas fa-box"></i> Items</a></li>
                     <li><a href="#"><i class="fas fa-shopping-cart"></i> Purchase</a></li>
                     <li><a href="#"><i class="fas fa-tags"></i> Sale</a></li>
-                    <li><a href="#"><i class="fas fa-box"></i> Items</a></li>
                     <li><a href="#"><i class="fas fa-chart-line"></i> Reports</a></li>
                     <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
                 </ul>
@@ -266,80 +264,44 @@
 
             <div id="medicine-view">
                 <div class="background-icon-overlay"></div>
-                
+
                 <h1 class="medicine-header">Pharmacia</h1>
+
+                <!-- Search / Filter / Controls -->
+                <div style="margin-bottom:12px; display:flex; gap:10px; align-items:center;">
+                    <input id="searchInput" type="search" placeholder="Search by name or category" style="flex:1; padding:8px 10px; border-radius:6px; border:1px solid #ddd;" />
+                    <select title="Filter by category" id="categoryFilter" style="padding:8px 10px; border-radius:6px; border:1px solid #ddd;">
+                        <option value="">All categories</option>
+                    </select>
+                    <button id="clearFilters" style="padding:8px 12px; border-radius:6px; border:1px solid #ddd; background:#fff; cursor:pointer;">Clear</button>
+                </div>
 
                 <section class="medicine-table-container">
                     <table class="medicine-table">
                         <thead>
                             <tr>
-                                <th><input type="checkbox"></th>
-                                <th>Product <i class="fas fa-sort-down"></i></th>
-                                <th>Str/Form</th>
-                                <th>NDC/Pkg</th>
-                                <th>Lot/Exp</th>
-                                <th>Prgm/Loc</th>
-                                <th style="text-align: right;">Qty.</th>
+                                <th><input label="product" type="checkbox" placeholder="Select all"></th>
+                                <th>Product</th>
+                                <th>Description</th>
+                                <th class="sortable" data-key="price">Price <i class="fas fa-sort"></i></th>
                                 <th>UoM</th>
+                                <th class="sortable" data-key="stock" style="text-align:right;">Qty. <i class="fas fa-sort"></i></th>
                                 <th style="text-align: right;">Delta</th>
                                 <th>Note</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td class="product-cell"><div class="brand-name">Brand Name®</div><div class="generic-name">Generic Name</div></td>
-                                <td class="two-line-data"><div class="top-line">200mg</div><div class="bottom-line">Tablet</div></td>
-                                <td class="two-line-data"><div class="top-line">001230056</div><div class="bottom-line">100/box, 10/case</div></td>
-                                <td class="two-line-data"><div class="top-line">1TMS9832</div><div class="bottom-line">11-30-2025</div></td>
-                                <td class="two-line-data"><div class="top-line">Clinic</div><div class="bottom-line">Med Fridge</div></td>
-                                <td style="text-align: right;">2.5</td>
-                                <td>Btl.</td>
-                                <td style="text-align: right;">0</td>
-                                <td></td>
-                            </tr>
-                            <tr class="low-stock-row">
-                                <td><input type="checkbox"></td>
-                                <td class="product-cell"><div class="brand-name">Brand Name®</div><div class="generic-name">Generic Name</div></td>
-                                <td class="two-line-data"><div class="top-line">200mg</div><div class="bottom-line">Tablet</div></td>
-                                <td class="two-line-data"><div class="top-line">001230056</div><div class="bottom-line">100/box, 10/case</div></td>
-                                <td class="two-line-data"><div class="top-line">1TMS9832</div><div class="bottom-line">11-30-2025</div></td>
-                                <td class="two-line-data"><div class="top-line">Clinic</div><div class="bottom-line">Med Fridge</div></td>
-                                <td class="low-stock-qty" style="text-align: right;">15</td>
-                                <td>Btl.</td>
-                                <td class="delta-negative" style="text-align: right;">-3</td>
-                                <td><i class="fas fa-edit edit-icon"></i></td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td class="product-cell"><div class="brand-name">Brand Name®</div><div class="generic-name">Generic Name</div></td>
-                                <td class="two-line-data"><div class="top-line">200mg</div><div class="bottom-line">Tablet</div></td>
-                                <td class="two-line-data"><div class="top-line">001230056</div><div class="bottom-line">100/box, 10/case</div></td>
-                                <td class="two-line-data"><div class="top-line">1TMS9832</div><div class="bottom-line">11-30-2025</div></td>
-                                <td class="two-line-data"><div class="top-line">Clinic</div><div class="bottom-line">Med Fridge</div></td>
-                                <td style="text-align: right;">2.5</td>
-                                <td>Btl.</td>
-                                <td style="text-align: right;">0</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td class="product-cell"><div class="brand-name">Brand Name®</div><div class="generic-name">Generic Name</div></td>
-                                <td class="two-line-data"><div class="top-line">200mg</div><div class="bottom-line">Tablet</div></td>
-                                <td class="two-line-data"><div class="top-line">001230056</div><div class="bottom-line">100/box, 10/case</div></td>
-                                <td class="two-line-data"><div class="top-line">1TMS9832</div><div class="bottom-line">11-30-2025</div></td>
-                                <td class="two-line-data"><div class="top-line">Clinic</div><div class="bottom-line">Med Fridge</div></td>
-                                <td style="text-align: right;">2.5</td>
-                                <td>Btl.</td>
-                                <td style="text-align: right;">0</td>
-                                <td></td>
-                            </tr>
+                        <tbody id="medicine-tbody">
+                            <!-- Rows will be populated from data.js `items` array -->
                         </tbody>
                     </table>
                 </section>
             </div>
         </div>
     </div>
+    <!-- load data.js which defines `items` -->
+    <script src="data.js"></script>
+
+    <script src="data.js"></script>
 
     <script>
         // Highlight active sidebar link based on filename
@@ -356,6 +318,125 @@
                 }
             });
         })();
+
+        // Require login & Render items from data.js into the medicine table with search/filter and sorting
+        document.addEventListener('DOMContentLoaded', () => {
+            // basic login guard: redirect to login page if not logged in
+            try {
+                const name = sessionStorage.getItem('loggedInUser');
+                if (!name) {
+                    window.location.replace('LogIN.html');
+                    return;
+                }
+                const el = document.getElementById('userDisplay');
+                if (el) el.textContent = name;
+                const logout = document.getElementById('logoutLink');
+                if (logout) logout.addEventListener('click', (e) => { e.preventDefault(); try{sessionStorage.removeItem('loggedInUser')}catch{}; window.location.replace('LogIN.html'); });
+            } catch (err) {
+                console.warn('Login check failed', err);
+            }
+
+        
+            const tbody = document.getElementById('medicine-tbody');
+            const searchInput = document.getElementById('searchInput');
+            const categoryFilter = document.getElementById('categoryFilter');
+            const clearFilters = document.getElementById('clearFilters');
+            const sortableHeaders = document.querySelectorAll('.medicine-table th.sortable');
+
+            if (!tbody) return;
+
+            if (typeof items === 'undefined' || !Array.isArray(items)) {
+                tbody.innerHTML = '<tr><td colspan="8">No data available. Make sure <code>data.js</code> is loaded.</td></tr>';
+                return;
+            }
+
+            // populate category filter options
+            const categories = Array.from(new Set(items.map(i => i.category))).sort();
+            categories.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat;
+                opt.textContent = cat;
+                categoryFilter.appendChild(opt);
+            });
+
+            // Helper to escape HTML
+            function esc(s){ return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+            // State for sorting
+            let sortState = { key: null, dir: 1 }; // dir: 1 asc, -1 desc
+
+            function applyFiltersAndRender() {
+                const q = (searchInput.value || '').toLowerCase().trim();
+                const cat = categoryFilter.value;
+
+                let out = items.filter(it => {
+                    if (cat && it.category !== cat) return false;
+                    if (!q) return true;
+                    return (it.name && it.name.toLowerCase().includes(q)) || (it.category && it.category.toLowerCase().includes(q)) || (it.description && it.description.toLowerCase().includes(q));
+                });
+
+                // Apply sort
+                if (sortState.key) {
+                    out.sort((a,b) => {
+                        const A = a[sortState.key] ?? 0;
+                        const B = b[sortState.key] ?? 0;
+                        if (typeof A === 'string') return A.localeCompare(B) * sortState.dir;
+                        return (A - B) * sortState.dir;
+                    });
+                }
+
+                renderRows(out);
+            }
+
+            function renderRows(list) {
+                tbody.innerHTML = '';
+                if (!list.length) {
+                    tbody.innerHTML = '<tr><td colspan="8">No items match your filters.</td></tr>';
+                    return;
+                }
+
+                list.forEach(it => {
+                    const lowStock = typeof it.stock === 'number' && it.stock <= 15;
+                    const tr = document.createElement('tr');
+                    if (lowStock) tr.classList.add('low-stock-row');
+
+                    tr.innerHTML = `
+                        <td><input type="checkbox"></td>
+                        <td class="product-cell"><div class="brand-name">${esc(it.name)}</div><div class="generic-name">${esc(it.category)}</div></td>
+                        <td>${esc(it.description || '')}</td>
+                        <td>${it.price != null ? esc(it.price.toFixed(2)) : ''}</td>
+                        <td>${esc(it.unit || '')}</td>
+                        <td style="text-align: right;" class="${lowStock ? 'low-stock-qty' : ''}">${esc(it.stock)}</td>
+                        <td style="text-align: right;">0</td>
+                        <td>${it.prescriptionRequired ? '<i class="fas fa-prescription-bottle-alt" title="Prescription required"></i>' : ''} <i class="fas fa-edit edit-icon" title="Edit"></i></td>
+                    `;
+
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // wire search and filter
+            searchInput.addEventListener('input', () => applyFiltersAndRender());
+            categoryFilter.addEventListener('change', () => applyFiltersAndRender());
+            clearFilters.addEventListener('click', () => { searchInput.value=''; categoryFilter.value=''; applyFiltersAndRender(); });
+
+            // wire sortable headers
+            sortableHeaders.forEach(h => {
+                h.style.cursor = 'pointer';
+                h.addEventListener('click', () => {
+                    const key = h.getAttribute('data-key');
+                    if (sortState.key === key) sortState.dir *= -1; else { sortState.key = key; sortState.dir = 1; }
+                    // update sort icons (basic)
+                    document.querySelectorAll('.medicine-table th.sortable i').forEach(i => i.className = 'fas fa-sort');
+                    const icon = h.querySelector('i');
+                    if (icon) icon.className = sortState.dir === 1 ? 'fas fa-sort-up' : 'fas fa-sort-down';
+                    applyFiltersAndRender();
+                });
+            });
+
+            // initial render
+            applyFiltersAndRender();
+        });
     </script>
 </body>
 </html>

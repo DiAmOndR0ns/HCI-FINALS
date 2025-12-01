@@ -104,6 +104,23 @@
             box-shadow: 0 0 5px var(--btn-color);
         }
 
+        .input-group .toggle-pass {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #333;
+            font-size: 12px;
+            padding: 6px 8px;
+            border-radius: 6px;
+        }
+        .input-group .toggle-pass:focus {
+            outline: 2px solid rgba(46,204,113,0.25);
+        }
+
         .forgot-pass {
             width: 100%;
             text-align: right;
@@ -203,6 +220,7 @@
                 </div>
                 <div class="input-group">
                     <input type="password" id="password" placeholder="Password" required>
+                    <button type="button" class="toggle-pass" id="togglePass" aria-pressed="false" aria-label="Show password" title="Show password">Show</button>
                 </div>
                 
                 <div class="forgot-pass">
@@ -211,7 +229,8 @@
 
                 <button type="submit" class="btn btn-signin">SIGN IN</button>
                 <button type="button" class="btn btn-register" onclick="alert('Register feature coming soon!')">REGISTER</button>
-            </form>
+                <div id="errorMsg" style="color: #ffdfdf; font-size: 13px; text-align:center; margin-top:10px; display:none;"></div>
+            </form> 
         </div>
 
         <div class="image-section">
@@ -220,36 +239,111 @@
 
     </div>
 
+    <!-- load data.js so we can use `credentials` if present -->
+    <script src="data.js"></script>
     <script>
-        // JavaScript for basic interaction
+        // Simple client-side authentication + redirect demo
+        // NOTE: This is only suitable for demos/prototypes. Do NOT rely on client-side auth for real security.
         document.addEventListener('DOMContentLoaded', () => {
             const loginForm = document.getElementById('loginForm');
             const usernameInput = document.getElementById('username');
             const passwordInput = document.getElementById('password');
+            const errorMsg = document.getElementById('errorMsg');
+            const togglePassBtn = document.getElementById('togglePass');
+
+            // Hard-coded demo credentials (for prototype/testing only)
+            const validUsers = {
+                'admin': 'admin123',
+                'user1': 'password1'
+            };
+
+            // Helper: check credentials using data.js `credentials` if available,
+            // otherwise fall back to `validUsers` map.
+            function checkCredentials(inputUser, inputPass) {
+                // Use credentials from data.js if present
+                if (typeof credentials !== 'undefined' && credentials && credentials.username) {
+                    const storedUser = String(credentials.username || '');
+                    const storedPass = String(credentials.password || '');
+                    if (inputUser.toLowerCase() === storedUser.toLowerCase() && inputPass === storedPass) {
+                        return { ok: true, displayName: storedUser };
+                    }
+                    return { ok: false };
+                }
+
+                // Fallback to multiple demo users
+                if (validUsers[inputUser] && validUsers[inputUser] === inputPass) {
+                    // Use the raw inputUser as display name
+                    return { ok: true, displayName: inputUser };
+                }
+                return { ok: false };
+            }
+
+            function showError(text) {
+                errorMsg.style.display = 'block';
+                errorMsg.textContent = text;
+            }
+
+            function clearError() {
+                errorMsg.style.display = 'none';
+                errorMsg.textContent = '';
+            }
+
+            // Password reveal toggle
+            if (togglePassBtn) {
+                togglePassBtn.addEventListener('click', () => {
+                    const isHidden = passwordInput.type === 'password';
+                    passwordInput.type = isHidden ? 'text' : 'password';
+                    togglePassBtn.textContent = isHidden ? 'Hide' : 'Show';
+                    togglePassBtn.setAttribute('aria-pressed', isHidden ? 'true' : 'false');
+                    togglePassBtn.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
+                    togglePassBtn.title = isHidden ? 'Hide password' : 'Show password';
+                });
+            }
 
             loginForm.addEventListener('submit', (e) => {
-                e.preventDefault(); // Prevent actual submission for this demo
+                e.preventDefault();
 
-                const user = usernameInput.value;
+                const user = usernameInput.value.trim();
                 const pass = passwordInput.value;
 
-                // Simple validation simulation
-                if(user && pass) {
-                    // In a real app, you would send this to your backend
-                    console.log(`Attempting login with User: ${user}`);
-                    
-                    // Visual feedback
+                clearError();
+
+                if (!user || !pass) {
+                    showError('Please enter username and password.');
+                    return;
+                }
+
+                // Check against credentials (data.js) or fallback demo users
+                const result = checkCredentials(user, pass);
+                if (result.ok) {
+                    // Optional visual feedback
                     const btn = document.querySelector('.btn-signin');
                     const originalText = btn.innerText;
-                    
-                    btn.innerText = "LOGGING IN...";
-                    btn.style.opacity = "0.7";
-                    
+                    btn.innerText = 'LOGGING IN...';
+                    btn.style.opacity = '0.8';
+
+                    // Short delay to show feedback, then redirect
                     setTimeout(() => {
-                        alert(`Welcome back, ${user}! Login successful.`);
-                        btn.innerText = originalText;
-                        btn.style.opacity = "1";
-                    }, 1000);
+                        // Store logged-in user display name in sessionStorage so other pages can show it
+                        try {
+                            sessionStorage.setItem('loggedInUser', result.displayName || user);
+                        } catch (err) {
+                            console.warn('Could not write sessionStorage', err);
+                        }
+
+                        // Redirect to dashboard on successful login
+                        console.log('Login successful — redirecting to dashboard.html');
+                        try {
+                            // primary method
+                            window.location.href = 'dashboard.html';
+                        } catch (err) {
+                            console.warn('href redirect failed, trying assign/replace fallback', err);
+                            try { window.location.assign('dashboard.html'); } catch(e) {}
+                            try { window.location.replace('dashboard.html'); } catch(e) {}
+                        }
+                    }, 600);
+                } else {
+                    showError('Invalid username or password.');
                 }
             });
         });

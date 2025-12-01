@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pharmacy Inventory Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 
     <style>
         /* Basic Reset */
@@ -28,8 +29,7 @@
 
         /* --- 2. Sidebar Styling --- */
         .sidebar {
-            background-color: #555555; /* Dark gray for the main sidebar */
-            color: white;
+            /* color and background handled by shared style.css palette */
             padding-top: 20px;
         }
 
@@ -258,7 +258,10 @@
         <aside class="sidebar">
             <div class="user-profile">
                 <div class="avatar-placeholder"></div>
-                <p>Employee 1</p>
+                <div style="display:flex;flex-direction:column;">
+                    <p id="userDisplay">Employee 1</p>
+                    <a href="#" id="logoutLink" style="color:#ddd; font-size:0.85em; text-decoration:none; margin-top:4px;">Logout</a>
+                </div>
             </div>
             <nav class="nav-links">
                 <ul>
@@ -384,8 +387,16 @@
     </div>
 
     <script>
-        // Highlight active sidebar link based on filename
+        // Require login and highlight active sidebar link based on filename
         (function(){
+            try {
+                const name = sessionStorage.getItem('loggedInUser');
+                if (!name) { window.location.replace('LogIN.html'); return; }
+                const el = document.getElementById('userDisplay'); if (el) el.textContent = name;
+                const logout = document.getElementById('logoutLink');
+                if (logout) logout.addEventListener('click', (e) => { e.preventDefault(); try{sessionStorage.removeItem('loggedInUser')}catch{}; window.location.replace('LogIN.html'); });
+            } catch (err) { console.warn('Login check failed', err); }
+
             const links = document.querySelectorAll('.nav-links a');
             const current = location.pathname.split('/').pop() || 'dashboard.html';
             links.forEach(a => {

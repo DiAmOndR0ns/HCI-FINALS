@@ -12,16 +12,18 @@
         <aside class="sidebar">
             <div class="user-profile">
                 <div class="avatar-placeholder"></div>
-                <p>Employee 1</p>
+                <div style="display:flex;flex-direction:column;">
+                    <p id="userDisplay">Employee 1</p>
+                    <a href="#" id="logoutLink" style="color:#ddd; font-size:0.85em; text-decoration:none; margin-top:4px;">Logout</a>
+                </div>
             </div>
             <nav class="nav-links">
                 <ul>
-                    <li class="active"><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
-                    <li><a href="manage-users.html"><i class="fas fa-users"></i> Manage Users</a></li>
-                    <li><a href="medicine.html"><i class="fas fa-capsules"></i> Medicine</a></li>
+                    <li><a href="dashboard.html" class="dashboard-link"><i class="fas fa-th-large"></i> Dashboard</a></li>
+                    <li><a href="manage-users.html" class="manage-users-link"><i class="fas fa-users"></i> Manage Users</a></li>
+                    <li class="active"><a href="medicine.html" class="medicine-link"><i class="fas fa-box"></i> Items</a></li>
                     <li><a href="#"><i class="fas fa-shopping-cart"></i> Purchase</a></li>
                     <li><a href="#"><i class="fas fa-tags"></i> Sale</a></li>
-                    <li><a href="#"><i class="fas fa-box"></i> Items</a></li>
                     <li><a href="#"><i class="fas fa-chart-line"></i> Reports</a></li>
                     <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
                 </ul>
@@ -33,8 +35,8 @@
             
             <section class="cards-grid">
                 <div class="card card-blue">
-                    <div class="card-icon"><i class="fas fa-plus-square"></i></div>
-                    <p class="card-label">Medicines</p>
+                    <div class="card-icon"><i class="fas fa-box"></i></div>
+                    <p class="card-label">Items</p>
                     <p class="card-value">67</p>
                 </div>
                 <div class="card card-green">
@@ -66,5 +68,32 @@
             </section>
         </div>
     </div>
+    <script>
+        // Require login: redirect to LogIN.html if no loggedInUser
+        (function(){
+            try {
+                const name = sessionStorage.getItem('loggedInUser');
+                if (!name) {
+                    // not logged in -> send to login
+                    window.location.replace('LogIN.html');
+                    return;
+                }
+                const el = document.getElementById('userDisplay');
+                if (el) el.textContent = name;
+
+                // logout handler
+                const logout = document.getElementById('logoutLink');
+                if (logout) {
+                    logout.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        try { sessionStorage.removeItem('loggedInUser'); } catch(_) {}
+                        window.location.replace('LogIN.html');
+                    });
+                }
+            } catch (err) {
+                console.warn('Login check failed', err);
+            }
+        })();
+    </script>
 </body>
 </html>

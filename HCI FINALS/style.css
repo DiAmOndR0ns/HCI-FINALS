@@ -1,3 +1,13 @@
+/* --- CSS Variables for Unified Palette --- */
+:root {
+    --bg-left: #013A28;  /* Deep Dark Green */
+    --bg-right: #0E6B48; /* Lighter Pharmacy Green */
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --text-color: #ffffff;
+    --input-bg: rgba(255, 255, 255, 0.8);
+    --btn-color: #2ECC71; /* Bright Green for CTA */
+    --btn-hover: #27ae60;
+}
 /* Basic Reset */
 * {
     margin: 0;
@@ -7,6 +17,8 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(90deg, var(--bg-left) 50%, var(--bg-right) 50%);
+    color: var(--text-color);
 }
 
 /* --- 1. Dashboard Grid Layout --- */
@@ -19,7 +31,7 @@ body {
 
 /* --- 2. Sidebar Styling --- */
 .sidebar {
-    background-color: #555555; /* Dark gray for the main sidebar */
+    background-color: var(--bg-left); /* Unified sidebar color */
     color: white;
     padding-top: 20px;
 }
