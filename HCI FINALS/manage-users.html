@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy Inventory Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* --- 1. Dashboard Grid Layout --- */
+        .dashboard-container {
+            display: grid;
+            /* Sidebar is a fixed width (approx 200px), Main content fills the rest */
+            grid-template-columns: 200px 1fr;
+            min-height: 100vh;
+        }
+
+        /* --- 2. Sidebar Styling --- */
+        .sidebar {
+            background-color: #555555; /* Dark gray for the main sidebar */
+            color: white;
+            padding-top: 20px;
+        }
+
+        .user-profile {
+            padding: 10px 20px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 10px;
+        }
+
+        .avatar-placeholder {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #8c8c8c; /* Lighter gray for avatar placeholder */
+            margin-right: 10px;
+        }
+
+        .nav-links ul {
+            list-style: none;
+        }
+
+        .nav-links li a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #cccccc; /* Light gray text for inactive links */
+            font-size: 0.95em;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .nav-links li a i {
+            margin-right: 10px;
+            width: 20px; /* Ensures icon alignment */
+        }
+
+        /* Styling for the active link */
+        .nav-links li.active a {
+            background-color: #7966a3; /* Purple/Blue-ish background for active link */
+            color: white;
+            border-left: 5px solid #ffffff; /* White active border */
+            padding-left: 15px; /* Adjust padding due to border */
+        }
+
+        .nav-links li:not(.active) a:hover {
+            background-color: #666666;
+            color: white;
+        }
+
+        /* --- 3. Main Content Area --- */
+        .main-content {
+            background-color: #f5f2e3; /* Beige/Cream background */
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Large Background Icon Overlay (The snake/rod of Asclepius) */
+        .background-icon-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: 70%;
+            /* Using a simple circular placeholder for the complex snake icon for brevity */
+            background-color: #b8c4ae;
+            /* Using mask and SVG data for the shape */
+            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm289-106.6C321.4 126.9 352 135.9 352 176c0 31.8-11.8 45-20.5 56.4c-4.9 6.2-9.2 12.8-13 19.8c-20 37.9-20 84.1-20 122.9V416H184V375c0-38.9 0-85.1-20-122.9c-3.8-7-8.1-13.6-13-19.8C140 221 128 207.8 128 176c0-40.1 30.6-49.1 63-76.8c32.4-27.7 77-27.7 109.4 0zm10.7-33.4C261 144.3 226.7 144.3 200 171.8c-26.7 27.5-63 24.3-63 60.2c0 14.5 4.3 25.1 8.8 33.3c7.2 13.1 16.5 25.5 27.8 36.8c11.3 11.3 23.7 20.6 36.8 27.8c8.2 4.5 18.8 8.8 33.3 8.8h.2c1.7 0 3.4 0 5.1-.1v-48c0-13.3 10.7-24 24-24s24 10.7 24 24v48c1.7 0 3.4 0 5.1.1h.2c14.5 0 25.1-4.3 33.3-8.8c13.1-7.2 25.5-16.5 36.8-27.8c11.3-11.3 20.6-23.7 27.8-36.8c4.5-8.2 8.8-18.8 8.8-33.3c0-35.9-36.3-32.7-63-60.2c-26.7-27.5-61-27.5-87.7 0z"/></svg>');
+            mask-repeat: no-repeat;
+            mask-size: contain;
+            mask-position: center;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+
+        /* --- 4. Dashboard Cards Grid Layout --- */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            z-index: 10;
+            position: relative;
+        }
+
+        .card {
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+            height: 120px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            grid-template-rows: 1fr auto;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-icon {
+            font-size: 2.5em;
+            grid-row: 1 / 3;
+            margin-right: 15px;
+        }
+
+        .card-label {
+            font-size: 1em;
+            font-weight: 500;
+            align-self: flex-start;
+        }
+
+        .card-value {
+            font-size: 2.2em;
+            font-weight: bold;
+            justify-self: end;
+            grid-column: 2;
+            grid-row: 2;
+            align-self: flex-end;
+        }
+
+        /* Specific Card Colors */
+        .card-blue { background-color: #3498db; }
+        .card-green { background-color: #2ecc71; }
+        .card-lime { background-color: #b7e45e; }
+        .card-orange { background-color: #f39c12; }
+        .card-pink { background-color: #ff6988; }
+        .card-red { background-color: #e74c3c; }
+
+        /* Adjusting specific card icon color for Lime card */
+        .card-lime .card-icon {
+            color: #4c5d26; /* Darker color for visibility on light background */
+        }
+
+        /* --- 5. Manage Users Page (Table Styles) --- */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .page-header h1 {
+            font-size: 2em;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .status-filter {
+            font-size: 1.2em;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .user-table-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #f5f2e3; /* Light background for the header to match the page */
+        }
+
+        th {
+            text-align: left;
+            padding: 15px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        td {
+            padding: 10px 15px;
+            color: #555;
+        }
+
+        .email-link {
+            color: #6a5acd; /* Purple/blue color for a link */
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .user-row {
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .user-row:last-child {
+            border-bottom: none;
+        }
+
+        .user-row:hover {
+            background-color: #f9f9f9;
+        }
+
+        .user-row td:nth-child(4) {
+            font-size: 0.85em;
+            line-height: 1.3;
+        }
+
+        .options-menu {
+            font-size: 0.9em;
+            color: #888;
+            cursor: pointer;
+        }
+
+        .sortable {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .sortable i {
+            margin-left: 5px;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="user-profile">
+                <div class="avatar-placeholder"></div>
+                <p>Employee 1</p>
+            </div>
+            <nav class="nav-links">
+                <ul>
+                    <li class="active"><a href="#"><i class="fas fa-th-large"></i> Dashboard</a></li>
+                    <li><a href="#" class="manage-users-link"><i class="fas fa-users"></i> Manage Users</a></li>
+                    <li><a href="#"><i class="fas fa-capsules"></i> Medicine</a></li>
+                    <li><a href="#"><i class="fas fa-shopping-cart"></i> Purchase</a></li>
+                    <li><a href="#"><i class="fas fa-tags"></i> Sale</a></li>
+                    <li><a href="#"><i class="fas fa-box"></i> Items</a></li>
+                    <li><a href="#"><i class="fas fa-chart-line"></i> Reports</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="main-content" id="main-content-area">
+
+            <div id="dashboard-view">
+                <div class="background-icon-overlay"></div>
+                
+                <section class="cards-grid">
+                    <div class="card card-blue">
+                        <div class="card-icon"><i class="fas fa-plus-square"></i></div>
+                        <p class="card-label">Medicines</p>
+                        <p class="card-value">67</p>
+                    </div>
+                    <div class="card card-green">
+                        <div class="card-icon"><i class="fas fa-leaf"></i></div>
+                        <p class="card-label">Sales of the Day</p>
+                        <p class="card-value">67</p>
+                    </div>
+                    <div class="card card-lime">
+                        <div class="card-icon"><i class="fas fa-chart-area"></i></div>
+                        <p class="card-label">Sales of the Month</p>
+                        <p class="card-value">67</p>
+                    </div>
+                    <div class="card card-orange">
+                        <div class="card-icon"><i class="fas fa-info"></i></div>
+                        <p class="card-label">Stock Shortages</p>
+                        <p class="card-value">67</p>
+                    </div>
+                    <div class="card card-pink">
+                        <div class="card-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                        <p class="card-label">Near Expiry</p>
+                        <p class="card-value">67</p>
+                    </div>
+                    <div class="card card-red">
+                        <div class="card-icon"><i class="fas fa-ban"></i></div>
+                        <p class="card-label">Expired Products</p>
+                        <p class="card-value">67</p>
+                    </div>
+                </section>
+            </div>
+            
+            <div id="users-view" style="display:none;"> 
+                <div class="background-icon-overlay"></div>
+
+                <header class="page-header">
+                    <h1>Users (5)</h1>
+                    <div class="table-actions">
+                        <i class="fas fa-filter status-filter"></i>
+                    </div>
+                </header>
+                
+                <section class="user-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th class="sortable">Created at <i class="fas fa-arrow-down"></i></th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="user-row">
+                                <td>No.001</td>
+                                <td>Jhon Fallout</td>
+                                <td class="email-link">courier@gmail.com</td>
+                                <td>Nov. 29, 2025<br>06:43 pm</td>
+                                <td>Active</td>
+                                <td><i class="fas fa-ellipsis-v options-menu"></i></td>
+                            </tr>
+                            <tr class="user-row">
+                                <td>No.002</td>
+                                <td>Veronica</td>
+                                <td class="email-link">ver0n@gmail.com</td>
+                                <td>Nov. 30, 2025<br>11:34 pm</td>
+                                <td>Deactivated</td>
+                                <td><i class="fas fa-ellipsis-v options-menu"></i></td>
+                            </tr>
+                            <tr class="user-row">
+                                <td>No.003</td>
+                                <td>Juan</td>
+                                <td class="email-link">Onee@gmail.com</td>
+                                <td>Dec. 01, 2025<br>09:00 pm</td>
+                                <td>Active</td>
+                                <td><i class="fas fa-ellipsis-v options-menu"></i></td>
+                            </tr>
+                            <tr class="user-row">
+                                <td>No.004</td>
+                                <td>Ruby</td>
+                                <td class="email-link">Rred@gmail.com</td>
+                                <td>Dec. 02, 2025<br>12:00 pm</td>
+                                <td>Deleted</td>
+                                <td><i class="fas fa-ellipsis-v options-menu"></i></td>
+                            </tr>
+                            <tr class="user-row">
+                                <td>No.005</td>
+                                <td>Sapphire</td>
+                                <td class="email-link">Bluue3@gmail.com</td>
+                                <td>Dec. 03, 2025<br>5:00 pm</td>
+                                <td>Deactivated</td>
+                                <td><i class="fas fa-ellipsis-v options-menu"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple JavaScript to switch between the two views
+        const dashboardLink = document.querySelector('.nav-links li.active a');
+        const usersLink = document.querySelector('.manage-users-link');
+        const dashboardView = document.getElementById('dashboard-view');
+        const usersView = document.getElementById('users-view');
+        const sidebarLinks = document.querySelectorAll('.nav-links li');
+
+        // Function to handle link clicks
+        function switchView(viewToShow, activeLink) {
+            // Hide all views
+            dashboardView.style.display = 'none';
+            usersView.style.display = 'none';
+
+            // Show the selected view
+            viewToShow.style.display = 'block';
+
+            // Update active state in sidebar
+            sidebarLinks.forEach(li => li.classList.remove('active'));
+            activeLink.closest('li').classList.add('active');
+        }
+
+        // Event listener for Dashboard link
+        dashboardLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchView(dashboardView, dashboardLink);
+        });
+
+        // Event listener for Manage Users link
+        usersLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchView(usersView, usersLink);
+        });
+    </script>
+</body>
+</html>

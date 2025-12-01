@@ -1,0 +1,155 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* --- 1. Dashboard Grid Layout --- */
+.dashboard-container {
+    display: grid;
+    /* Sidebar is a fixed width (approx 200px), Main content fills the rest */
+    grid-template-columns: 200px 1fr; 
+    min-height: 100vh;
+}
+
+/* --- 2. Sidebar Styling --- */
+.sidebar {
+    background-color: #555555; /* Dark gray for the main sidebar */
+    color: white;
+    padding-top: 20px;
+}
+
+.user-profile {
+    padding: 10px 20px 20px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 10px;
+}
+
+.avatar-placeholder {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #8c8c8c; /* Lighter gray for avatar placeholder */
+    margin-right: 10px;
+}
+
+.nav-links ul {
+    list-style: none;
+}
+
+.nav-links li a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: #cccccc; /* Light gray text for inactive links */
+    font-size: 0.95em;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-links li a i {
+    margin-right: 10px;
+    width: 20px; /* Ensures icon alignment */
+}
+
+/* Styling for the active link (Dashboard) */
+.nav-links li.active a {
+    background-color: #7966a3; /* Purple/Blue-ish background for active link */
+    color: white;
+    border-left: 5px solid #ffffff; /* White active border */
+    padding-left: 15px; /* Adjust padding due to border */
+}
+
+.nav-links li:not(.active) a:hover {
+    background-color: #666666;
+    color: white;
+}
+
+/* --- 3. Main Content Area --- */
+.main-content {
+    background-color: #f5f2e3; /* Beige/Cream background */
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Large Background Icon Overlay (The snake/rod of Asclepius) */
+.background-icon-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    height: 70%;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="%23b8c4ae" opacity="0.4" d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm289-106.6C321.4 126.9 352 135.9 352 176c0 31.8-11.8 45-20.5 56.4c-4.9 6.2-9.2 12.8-13 19.8c-20 37.9-20 84.1-20 122.9V416H184V375c0-38.9 0-85.1-20-122.9c-3.8-7-8.1-13.6-13-19.8C140 221 128 207.8 128 176c0-40.1 30.6-49.1 63-76.8c32.4-27.7 77-27.7 109.4 0zm10.7-33.4C261 144.3 226.7 144.3 200 171.8c-26.7 27.5-63 24.3-63 60.2c0 14.5 4.3 25.1 8.8 33.3c7.2 13.1 16.5 25.5 27.8 36.8c11.3 11.3 23.7 20.6 36.8 27.8c8.2 4.5 18.8 8.8 33.3 8.8h.2c1.7 0 3.4 0 5.1-.1v-48c0-13.3 10.7-24 24-24s24 10.7 24 24v48c1.7 0 3.4 0 5.1.1h.2c14.5 0 25.1-4.3 33.3-8.8c13.1-7.2 25.5-16.5 36.8-27.8c11.3-11.3 20.6-23.7 27.8-36.8c4.5-8.2 8.8-18.8 8.8-33.3c0-35.9-36.3-32.7-63-60.2c-26.7-27.5-61-27.5-87.7 0z"/></svg>'); /* Placeholder for medical symbol */
+    background-repeat: no-repeat;
+    background-size: contain;
+    pointer-events: none; /* Allows clicks to pass through to cards */
+}
+
+
+/* --- 4. Cards Grid Layout --- */
+.cards-grid {
+    display: grid;
+    /* Creates a 3-column layout */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px;
+    z-index: 10; /* Ensures cards are above the background icon */
+    position: relative; 
+}
+
+.card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px; /* Large border radius */
+    color: white; /* All text on cards is white */
+    height: 120px;
+    display: grid;
+    /* Defines card internal layout: 2 rows (label, value) and 2 columns (icon, text) */
+    grid-template-columns: auto 1fr; 
+    grid-template-rows: 1fr auto;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-icon {
+    font-size: 2.5em;
+    grid-row: 1 / 3; /* Spans both rows */
+    margin-right: 15px;
+}
+
+.card-label {
+    font-size: 1em;
+    font-weight: 500;
+    align-self: flex-start;
+}
+
+.card-value {
+    font-size: 2.2em;
+    font-weight: bold;
+    justify-self: end; /* Moves the value to the right */
+    grid-column: 2;
+    grid-row: 2;
+    align-self: flex-end;
+}
+
+/* Specific Card Colors */
+.card-blue { background-color: #3498db; }
+.card-green { background-color: #2ecc71; }
+.card-lime { background-color: #b7e45e; }
+.card-orange { background-color: #f39c12; }
+.card-pink { background-color: #ff6988; }
+.card-red { background-color: #e74c3c; }
+
+/* Adjusting specific card icon color for Lime card */
+.card-lime .card-icon {
+    color: #4c5d26; /* Darker color for visibility on light background */
+}
+
