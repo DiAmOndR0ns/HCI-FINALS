@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacia Management System - Login</title>
+    <style>
+        /* --- CSS Reset & Variables --- */
+        :root {
+            --bg-left: #013A28;  /* Deep Dark Green */
+            --bg-right: #0E6B48; /* Lighter Pharmacy Green */
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --text-color: #ffffff;
+            --input-bg: rgba(255, 255, 255, 0.8);
+            --btn-color: #2ECC71; /* Bright Green for CTA */
+            --btn-hover: #27ae60;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* --- Layout --- */
+        body {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Creating the split background effect */
+            background: linear-gradient(90deg, var(--bg-left) 50%, var(--bg-right) 50%);
+        }
+
+        /* --- Main Card Container --- */
+        .login-container {
+            width: 900px;
+            height: 550px;
+            display: flex;
+            background: var(--glass-bg);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* --- Left Side (Form) --- */
+        .form-section {
+            flex: 1;
+            padding: 0px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(1, 58, 40, 0.85); /* Slightly darker overlay */
+            color: var(--text-color);
+        }
+
+        .logo-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .logo-img {
+            width: 140px;
+            height: 140px;
+            border-radius: 0;
+            margin-bottom: 12px;
+            border: none;
+            display: block;
+            object-fit: contain;
+        }
+
+        h2 {
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+        }
+
+        /* --- Inputs --- */
+        .input-group {
+            width: 220px; /* narrow inputs like reference */
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border: none;
+            border-radius: 4px;
+            background: #e9f2ec; /* light muted input like reference */
+            font-size: 13px;
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        .input-group input:focus {
+            background: #ffffff;
+            box-shadow: 0 0 5px var(--btn-color);
+        }
+
+        .forgot-pass {
+            width: 100%;
+            text-align: right;
+            font-size: 12px;
+            margin-bottom: 25px;
+        }
+
+        .forgot-pass a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .forgot-pass a:hover {
+            color: white;
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: transform 0.2s, background 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .btn-signin {
+            background-color: var(--btn-color);
+            color: white;
+            width: 160px; /* center and narrow like reference */
+            margin: 0 auto 10px;
+            display: block;
+            border-radius: 20px;
+            padding: 10px 14px;
+        }
+
+        .btn-signin:hover {
+            background-color: var(--btn-hover);
+            transform: translateY(-2px);
+        }
+
+        /* hide register button for the reference look */
+        .btn-register { display: none; }
+
+        /* --- Right Side (Image) --- */
+        .image-section {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: none; /* keep original pill photo colors */
+            transform: translateX(6px); /* small offset like reference crop */
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            body {
+                background: var(--bg-left);
+            }
+            .login-container {
+                width: 90%;
+                height: auto;
+                flex-direction: column;
+            }
+            .image-section {
+                display: none; /* Hide image on mobile for cleaner look */
+            }
+            .form-section {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        
+        <div class="form-section">
+            <div class="logo-container">
+                <img src="pHARMACIA.png" alt="Pharmacia Logo" class="logo-img">
+            </div>
+
+            <h2>Login</h2>
+
+            <form id="loginForm">
+                <div class="input-group">
+                    <input type="text" id="username" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                
+                <div class="forgot-pass">
+                    <a href="#">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="btn btn-signin">SIGN IN</button>
+                <button type="button" class="btn btn-register" onclick="alert('Register feature coming soon!')">REGISTER</button>
+            </form>
+        </div>
+
+        <div class="image-section">
+            <img src="pills_image.jpg" alt="Medicine Background">
+        </div>
+
+    </div>
+
+    <script>
+        // JavaScript for basic interaction
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('loginForm');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault(); // Prevent actual submission for this demo
+
+                const user = usernameInput.value;
+                const pass = passwordInput.value;
+
+                // Simple validation simulation
+                if(user && pass) {
+                    // In a real app, you would send this to your backend
+                    console.log(`Attempting login with User: ${user}`);
+                    
+                    // Visual feedback
+                    const btn = document.querySelector('.btn-signin');
+                    const originalText = btn.innerText;
+                    
+                    btn.innerText = "LOGGING IN...";
+                    btn.style.opacity = "0.7";
+                    
+                    setTimeout(() => {
+                        alert(`Welcome back, ${user}! Login successful.`);
+                        btn.innerText = originalText;
+                        btn.style.opacity = "1";
+                    }, 1000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
