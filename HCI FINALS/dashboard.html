@@ -1,76 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pharmacy Dashboard 2.0</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="data.js"></script>
 </head>
+
 <body>
+    <div class="watermark-bg" aria-hidden="true"></div>
     <div class="dashboard-container">
         <aside class="sidebar">
             <div class="user-profile">
                 <div class="avatar-placeholder"></div>
                 <div style="display:flex;flex-direction:column;">
                     <p id="userDisplay">Employee 1</p>
-                    <a href="#" id="logoutLink" style="color:#ddd; font-size:0.85em; text-decoration:none; margin-top:4px;">Logout</a>
+                    <a href="#" id="logoutLink"
+                        style="color:#ddd; font-size:0.85em; text-decoration:none; margin-top:4px;">Logout</a>
                 </div>
             </div>
             <nav class="nav-links">
                 <ul>
-                    <li><a href="dashboard.html" class="dashboard-link"><i class="fas fa-th-large"></i> Dashboard</a></li>
-                    <li><a href="manage-users.html" class="manage-users-link"><i class="fas fa-users"></i> Manage Users</a></li>
+                    <li><a href="dashboard.html" class="dashboard-link"><i class="fas fa-th-large"></i> Dashboard</a>
+                    </li>
+                    <li><a href="manage-users.html" class="manage-users-link"><i class="fas fa-users"></i> Manage
+                            Users</a></li>
                     <li><a href="items.html" class="medicine-link"><i class="fas fa-box"></i> Items</a></li>
                     <li><a href="purchases.html"><i class="fas fa-shopping-cart"></i> Purchase</a></li>
-                    <li><a href="#"><i class="fas fa-tags"></i> Sale</a></li>
-                    <li><a href="#"><i class="fas fa-chart-line"></i> Reports</a></li>
-                    <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                    <li><a href="sales.html" class="sales-link"><i class="fas fa-tags"></i> Sale</a></li>
+                    <li><a href="reports.html" class="reports-link"><i class="fas fa-chart-line"></i> Reports</a></li>
+                    <li><a href="settings.html" class="settings-link"><i class="fas fa-cog"></i> Settings</a></li>
                 </ul>
             </nav>
         </aside>
 
         <div class="main-content">
-            <div class="background-icon-overlay"></div>
-            
             <section class="cards-grid">
                 <div class="card card-blue">
                     <div class="card-icon"><i class="fas fa-box"></i></div>
-                    <p class="card-label">Items</p>
-                    <p class="card-value">67</p>
+                    <p class="card-label">Total Items</p>
+                    <p class="card-value" id="totalItems">0</p>
                 </div>
                 <div class="card card-green">
-                    <div class="card-icon"><i class="fas fa-leaf"></i></div>
-                    <p class="card-label">Sales of the Day</p>
-                    <p class="card-value">67</p>
+                    <div class="card-icon"><i class="fas fa-dollar-sign"></i></div>
+                    <p class="card-label">Total Sales</p>
+                    <p class="card-value" id="totalSales">$0</p>
                 </div>
                 <div class="card card-lime">
-                    <div class="card-icon"><i class="fas fa-chart-area"></i></div>
-                    <p class="card-label">Sales of the Month</p>
-                    <p class="card-value">67</p>
+                    <div class="card-icon"><i class="fas fa-users"></i></div>
+                    <p class="card-label">Active Users</p>
+                    <p class="card-value" id="activeUsers">0</p>
                 </div>
 
                 <div class="card card-orange">
-                    <div class="card-icon"><i class="fas fa-info"></i></div>
-                    <p class="card-label">Stock Shortages</p>
-                    <p class="card-value">67</p>
+                    <div class="card-icon"><i class="fas fa-exclamation"></i></div>
+                    <p class="card-label">Low Stock</p>
+                    <p class="card-value" id="lowStock">0</p>
                 </div>
                 <div class="card card-pink">
-                    <div class="card-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="card-icon"><i class="fas fa-hourglass-end"></i></div>
                     <p class="card-label">Near Expiry</p>
-                    <p class="card-value">67</p>
+                    <p class="card-value" id="nearExpiry">0</p>
                 </div>
                 <div class="card card-red">
                     <div class="card-icon"><i class="fas fa-ban"></i></div>
-                    <p class="card-label">Expired Products</p>
-                    <p class="card-value">67</p>
+                    <p class="card-label">Expired Items</p>
+                    <p class="card-value" id="expired">0</p>
                 </div>
             </section>
         </div>
     </div>
     <script>
+        // Load and populate dashboard with data
+        function populateDashboard() {
+            try {
+                if (typeof dashboardStats !== 'undefined') {
+                    document.getElementById('totalItems').textContent = dashboardStats.totalItems;
+                    document.getElementById('totalSales').textContent = '$' + dashboardStats.totalSales.toFixed(2);
+                    document.getElementById('activeUsers').textContent = dashboardStats.activeUsers;
+                    document.getElementById('lowStock').textContent = dashboardStats.lowStockItems.length;
+                    document.getElementById('nearExpiry').textContent = dashboardStats.nearExpiryProducts;
+                    document.getElementById('expired').textContent = dashboardStats.expiredProducts;
+                }
+            } catch (err) {
+                console.warn('Could not populate dashboard stats', err);
+            }
+        }
+
         // Require login: redirect to LogIN.html if no loggedInUser
-        (function(){
+        (function () {
             try {
                 const name = sessionStorage.getItem('loggedInUser');
                 if (!name) {
@@ -86,7 +107,7 @@
                 if (logout) {
                     logout.addEventListener('click', (e) => {
                         e.preventDefault();
-                        try { sessionStorage.removeItem('loggedInUser'); } catch(_) {}
+                        try { sessionStorage.removeItem('loggedInUser'); } catch (_) { }
                         window.location.replace('LogIN.html');
                     });
                 }
@@ -103,10 +124,14 @@
                         a.closest('li').classList.remove('active');
                     }
                 });
+
+                // Populate dashboard data
+                populateDashboard();
             } catch (err) {
                 console.warn('Login check failed', err);
             }
         })();
     </script>
 </body>
+
 </html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales - Pharmacy Management</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="data.js"></script>
+    <style>
+        .sales-table-container {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        .sales-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+        }
+        .sales-table thead {
+            background-color: #f5f2e3;
+        }
+        .sales-table th {
+            text-align: left;
+            padding: 12px;
+            font-weight: 600;
+            color: #333;
+        }
+        .sales-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+            color: #555;
+        }
+        .sales-table tr:hover {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="watermark-bg" aria-hidden="true"></div>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="user-profile">
+                <div class="avatar-placeholder"></div>
+                <div style="display:flex;flex-direction:column;">
+                    <p id="userDisplay">Employee 1</p>
+                    <a href="#" id="logoutLink" style="color:#ddd; font-size:0.85em; text-decoration:none; margin-top:4px;">Logout</a>
+                </div>
+            </div>
+            <nav class="nav-links">
+                <ul>
+                    <li><a href="dashboard.html" class="dashboard-link"><i class="fas fa-th-large"></i> Dashboard</a></li>
+                    <li><a href="manage-users.html" class="manage-users-link"><i class="fas fa-users"></i> Manage Users</a></li>
+                    <li><a href="items.html" class="items-link"><i class="fas fa-box"></i> Items</a></li>
+                    <li><a href="purchases.html"><i class="fas fa-shopping-cart"></i> Purchase</a></li>
+                    <li><a href="sales.html" class="sales-link"><i class="fas fa-tags"></i> Sale</a></li>
+                    <li><a href="reports.html" class="reports-link"><i class="fas fa-chart-line"></i> Reports</a></li>
+                    <li><a href="settings.html" class="settings-link"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="main-content">
+            <h1 style="color: #333; margin-bottom: 10px;">Sales Records</h1>
+            <div class="sales-table-container">
+                <table class="sales-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Item Name</th>
+                            <th>Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Total</th>
+                            <th>Cashier</th>
+                        </tr>
+                    </thead>
+                    <tbody id="salesTableBody">
+                        <!-- Sales will be populated from data.js -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Require login: redirect to LogIN.html if no loggedInUser
+        (function () {
+            try {
+                const name = sessionStorage.getItem('loggedInUser');
+                if (!name) {
+                    // not logged in -> send to login
+                    window.location.replace('LogIN.html');
+                    return;
+                }
+                const el = document.getElementById('userDisplay');
+                if (el) el.textContent = name;
+
+                // logout handler
+                const logout = document.getElementById('logoutLink');
+                if (logout) {
+                    logout.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        try { sessionStorage.removeItem('loggedInUser'); } catch (_) { }
+                        window.location.replace('LogIN.html');
+                    });
+                }
+
+                // Highlight active sidebar link based on current page
+                const links = document.querySelectorAll('.nav-links a');
+                const current = location.pathname.split('/').pop() || 'dashboard.html';
+                links.forEach(a => {
+                    const href = a.getAttribute('href');
+                    if (!href) return;
+                    if (href === current) {
+                        a.closest('li').classList.add('active');
+                    } else {
+                        a.closest('li').classList.remove('active');
+                    }
+                });
+
+                // Populate sales table from data.js
+                function populateSalesTable() {
+                    const tableBody = document.getElementById('salesTableBody');
+                    tableBody.innerHTML = '';
+
+                    sales.forEach(sale => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${sale.date}</td>
+                            <td>${sale.itemName}</td>
+                            <td>${sale.quantity}</td>
+                            <td>₱${sale.unitPrice.toFixed(2)}</td>
+                            <td style="font-weight: bold; color: #0E6B48;">₱${sale.total.toFixed(2)}</td>
+                            <td>${sale.cashier}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                }
+
+                // Call function when page loads
+                populateSalesTable();
+            } catch (err) {
+                console.warn('Login check failed', err);
+            }
+        })();
+    </script>
+</body>
+
+</html>
