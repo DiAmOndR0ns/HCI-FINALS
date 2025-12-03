@@ -6,10 +6,8 @@
     <title>Pharmacy Inventory Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <script src="data.js"></script>
 
     <style>
-        /* Basic Reset */
         * {
             margin: 0;
             padding: 0;
@@ -20,17 +18,13 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* --- 1. Dashboard Grid Layout --- */
         .dashboard-container {
             display: grid;
-            /* Sidebar is a fixed width (approx 200px), Main content fills the rest */
             grid-template-columns: 200px 1fr;
             min-height: 100vh;
         }
 
-        /* --- 2. Sidebar Styling --- */
         .sidebar {
-            /* color and background handled by shared style.css palette */
             padding-top: 20px;
         }
 
@@ -46,7 +40,7 @@
             width: 30px;
             height: 30px;
             border-radius: 50%;
-            background-color: #8c8c8c; /* Lighter gray for avatar placeholder */
+            background-color: #8c8c8c;
             margin-right: 10px;
         }
 
@@ -59,22 +53,21 @@
             align-items: center;
             padding: 12px 20px;
             text-decoration: none;
-            color: #cccccc; /* Light gray text for inactive links */
+            color: #cccccc;
             font-size: 0.95em;
             transition: background-color 0.2s, color 0.2s;
         }
 
         .nav-links li a i {
             margin-right: 10px;
-            width: 20px; /* Ensures icon alignment */
+            width: 20px;
         }
 
-        /* Styling for the active link */
         .nav-links li.active a {
-            background-color: #7966a3; /* Purple/Blue-ish background for active link */
+            background-color: #7966a3;
             color: white;
-            border-left: 5px solid #ffffff; /* White active border */
-            padding-left: 15px; /* Adjust padding due to border */
+            border-left: 5px solid #ffffff;
+            padding-left: 15px;
         }
 
         .nav-links li:not(.active) a:hover {
@@ -82,15 +75,13 @@
             color: white;
         }
 
-        /* --- 3. Main Content Area --- */
         .main-content {
-            background-color: #f5f2e3; /* Beige/Cream background */
+            background-color: #f5f2e3;
             padding: 30px;
             position: relative;
             overflow: hidden;
         }
 
-        /* Large Background Icon Overlay (The snake/rod of Asclepius) */
         .background-icon-overlay {
             position: absolute;
             top: 50%;
@@ -98,16 +89,15 @@
             transform: translate(-50%, -50%);
             width: 70%;
             height: 70%;
-            /* Using a simple circular placeholder for the complex snake icon for brevity */
             background-color: #b8c4ae;
-            /* Using mask and SVG data for the shape */
-            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm289-106.6C321.4 126.9 352 135.9 352 176c0 31.8-11.8 45-20.5 56.4c-4.9 6.2-9.2 12.8-13 19.8c-20 37.9-20 84.1-20 122.9V416H184V375c0-38.9 0-85.1-20-122.9c-3.8-7-8.1-13.6-13-19.8C140 221 128 207.8 128 176c0-40.1 30.6-49.1 63-76.8c32.4-27.7 77-27.7 109.4 0zm10.7-33.4C261 144.3 226.7 144.3 200 171.8c-26.7 27.5-63 24.3-63 60.2c0 14.5 4.3 25.1 8.8 33.3c7.2 13.1 16.5 25.5 27.8 36.8c11.3 11.3 23.7 20.6 36.8 27.8c8.2 4.5 18.8 8.8 33.3 8.8h.2c1.7 0 3.4 0 5.1-.1v-48c0-13.3 10.7-24 24-24s24 10.7 24 24v48c1.7 0 3.4 0 5.1.1h.2c14.5 0 25.1-4.3 33.3-8.8c13.1-7.2 25.5-16.5 36.8-27.8c11.3-11.3 20.6-23.7 27.8-36.8c4.5-8.2 8.8-18.8 8.8-33.3c0-35.9-36.3-32.7-63-60.2c-26.7-27.5-61-27.5-87.7 0z"/></svg>');
+            mask: url('LOGO.png');
+            mask-repeat: no-repeat;
+            mask-size: contain;
+            mask-position: center;
             opacity: 0.4;
             pointer-events: none;
         }
 
-
-        /* --- 4. Dashboard Cards Grid Layout --- */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -149,7 +139,6 @@
             align-self: flex-end;
         }
 
-        /* Specific Card Colors */
         .card-blue { background-color: #3498db; }
         .card-green { background-color: #2ecc71; }
         .card-lime { background-color: #b7e45e; }
@@ -157,12 +146,10 @@
         .card-pink { background-color: #ff6988; }
         .card-red { background-color: #e74c3c; }
 
-        /* Adjusting specific card icon color for Lime card */
         .card-lime .card-icon {
-            color: #4c5d26; /* Darker color for visibility on light background */
+            color: #4c5d26;
         }
 
-        /* --- 5. Manage Users Page (Table Styles) --- */
         .page-header {
             display: flex;
             justify-content: space-between;
@@ -195,7 +182,7 @@
         }
 
         thead {
-            background-color: #f5f2e3; /* Light background for the header to match the page */
+            background-color: #f5ebbc;
         }
 
         th {
@@ -211,7 +198,7 @@
         }
 
         .email-link {
-            color: #6a5acd; /* Purple/blue color for a link */
+            color: #6a5acd;
             text-decoration: none;
             cursor: pointer;
         }
@@ -330,13 +317,52 @@
                                 <th>User</th>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Role</th>
+                                <th class="sortable">Created at <i class="fas fa-arrow-down"></i></th>
                                 <th>Status</th>
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody id="userTableBody">
-                            <!-- Users will be populated from data.js -->
+                        <tbody>
+                            <tr class="user-row">
+                                <td>No.001</td>
+                                <td>Jhon Fallout</td>
+                                <td class="email-link">courier@gmail.com</td>
+                                <td>Nov. 29, 2025<br>06:43 pm</td>
+                                <td>Active</td>
+                                <td><i class="fas fa-ellipsis-v options-menu"></i></td>
+                            </tr>
+                            <tr class="user-row">
+                                <td>No.002</td>
+                                <td>Veronica</td>
+                                <td class="email-link">ver0n@gmail.com</td>
+                                <td>Nov. 30, 2025<br>11:34 pm</td>
+                                <td>Deactivated</td>
+                                <td><i class="fas fa-ellipsis-v options-menu"></i></td>
+                            </tr>
+                            <tr class="user-row">
+                                <td>No.003</td>
+                                <td>Juan</td>
+                                <td class="email-link">Onee@gmail.com</td>
+                                <td>Dec. 01, 2025<br>09:00 pm</td>
+                                <td>Active</td>
+                                <td><i class="fas fa-ellipsis-v options-menu"></i></td>
+                            </tr>
+                            <tr class="user-row">
+                                <td>No.004</td>
+                                <td>Ruby</td>
+                                <td class="email-link">Rred@gmail.com</td>
+                                <td>Dec. 02, 2025<br>12:00 pm</td>
+                                <td>Deleted</td>
+                                <td><i class="fas fa-ellipsis-v options-menu"></i></td>
+                            </tr>
+                            <tr class="user-row">
+                                <td>No.005</td>
+                                <td>Sapphire</td>
+                                <td class="email-link">Bluue3@gmail.com</td>
+                                <td>Dec. 03, 2025<br>5:00 pm</td>
+                                <td>Deactivated</td>
+                                <td><i class="fas fa-ellipsis-v options-menu"></i></td>
+                            </tr>
                         </tbody>
                     </table>
                 </section>
@@ -345,33 +371,6 @@
     </div>
 
     <script>
-        // Populate users table from data.js
-        function populateUsersTable() {
-            try {
-                if (typeof users !== 'undefined') {
-                    const tbody = document.getElementById('userTableBody');
-                    tbody.innerHTML = '';
-                    users.forEach(user => {
-                        const row = document.createElement('tr');
-                        row.className = 'user-row';
-                        const statusColor = user.status === 'Active' ? '#2ecc71' : '#e74c3c';
-                        row.innerHTML = `
-                            <td>No.${String(user.id).padStart(3, '0')}</td>
-                            <td>${user.username}</td>
-                            <td class="email-link">${user.email}</td>
-                            <td>${user.role}</td>
-                            <td style="color: ${statusColor}; font-weight: bold;">${user.status}</td>
-                            <td><i class="fas fa-ellipsis-v options-menu"></i></td>
-                        `;
-                        tbody.appendChild(row);
-                    });
-                }
-            } catch (err) {
-                console.warn('Could not populate users table', err);
-            }
-        }
-
-        // Require login and highlight active sidebar link based on filename
         (function(){
             try {
                 const name = sessionStorage.getItem('loggedInUser');
@@ -392,9 +391,6 @@
                     a.closest('li').classList.remove('active');
                 }
             });
-
-            // Populate users table
-            populateUsersTable();
         })();
     </script>
 </body>

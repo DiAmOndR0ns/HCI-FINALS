@@ -6,7 +6,6 @@
     <title>Pharmacy Inventory Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <script src="data.js"></script>
 
     <style>
         /* Basic Reset and Global Styles */
@@ -36,8 +35,10 @@
             width: 70%;
             height: 70%;
             background-color: #b8c4ae;
-            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm289-106.6C321.4 126.9 352 135.9 352 176c0 31.8-11.8 45-20.5 56.4c-4.9 6.2-9.2 12.8-13 19.8c-20 37.9-20 84.1-20 122.9V416H184V375c0-38.9 0-85.1-20-122.9c-3.8-7-8.1-13.6-13-19.8C140 221 128 207.8 128 176c0-40.1 30.6-49.1 63-76.8c32.4-27.7 77-27.7 109.4 0zm10.7-33.4C261 144.3 226.7 144.3 200 171.8c-26.7 27.5-63 24.3-63 60.2c0 14.5 4.3 25.1 8.8 33.3c7.2 13.1 16.5 25.5 27.8 36.8c11.3 11.3 23.7 20.6 36.8 27.8c8.2 4.5 18.8 8.8 33.3 8.8h.2c1.7 0 3.4 0 5.1-.1v-48c0-13.3 10.7-24 24-24s24 10.7 24 24v48c1.7 0 3.4 0 5.1.1h.2c14.5 0 25.1-4.3 33.3-8.8c13.1-7.2 25.5-16.5 36.8-27.8c11.3-11.3 20.6-23.7 27.8-36.8c4.5-8.2 8.8-18.8 8.8-33.3c0-35.9-36.3-32.7-63-60.2c-26.7-27.5-61-27.5-87.7 0z"/></svg>');
-            opacity: 0.4;
+            mask: url('LOGO.png');
+            mask-repeat: no-repeat;
+            mask-size: contain;
+            mask-position: center;
             pointer-events: none;
         }
         
@@ -198,7 +199,7 @@
         }
 
         .po-table thead {
-            background-color: #f5f2e3;
+            background-color: #f1e9bf;
         }
 
         .po-table th {
@@ -250,7 +251,6 @@
     </style>
 </head>
 <body>
-    <div class="watermark-bg" aria-hidden="true"></div>
     <div class="dashboard-container">
         <aside class="sidebar">
             <div class="user-profile">
@@ -298,13 +298,13 @@
                     <div style="display: flex; align-items: center;">
                         <label for="search">Search</label>
                         <input type="text" id="search" class="search-input" placeholder="Search">
-                        <select class="dropdown" aria-label="Filter by type" title="Filter by type">
+                        <select class="dropdown">
                             <option>All Types</option>
                         </select>
-                        <select class="dropdown" aria-label="Filter by supplier" title="Filter by supplier">
+                        <select class="dropdown">
                             <option>All Suppliers</option>
                         </select>
-                        <select class="dropdown" aria-label="Filter by status" title="Filter by status">
+                        <select class="dropdown">
                             <option>All Statuses</option>
                         </select>
                         <label class="checkbox-label"><input type="checkbox"> Show Archive</label>
@@ -326,8 +326,67 @@
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody id="purchasesTableBody">
-                            <!-- Purchases will be populated from data.js -->
+                        <tbody>
+                            <tr>
+                                <td><a href="#" class="po-name-link">PO Name 0021.67.23</a></td>
+                                <td>LOCAL</td>
+                                <td>Shop35</td>
+                                <td>500</td>
+                                <td>7,788.00</td>
+                                <td>07/25/2025</td>
+                                <td>08/14/2025</td>
+                                <td><span class="status-badge status-editing">Editing</span></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#" class="po-name-link">PO Name 0021.67.23</a></td>
+                                <td>DIRECT</td>
+                                <td>Shop03</td>
+                                <td>245</td>
+                                <td>788.00</td>
+                                <td>07/25/2025</td>
+                                <td>08/14/2025</td>
+                                <td><span class="status-badge status-confirmed">Confirmed</span></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#" class="po-name-link">PO Name 0021.67.23</a></td>
+                                <td>LOCAL</td>
+                                <td>Shop03</td>
+                                <td>245</td>
+                                <td>788.00</td>
+                                <td>07/25/2025</td>
+                                <td>08/14/2025</td>
+                                <td><span class="status-badge status-confirmed">Confirmed</span></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#" class="po-name-link">PO Name 0021.67.23</a></td>
+                                <td>DIRECT</td>
+                                <td>Shop03</td>
+                                <td>245</td>
+                                <td>788.00</td>
+                                <td>07/25/2025</td>
+                                <td>08/14/2025</td>
+                                <td><span class="status-badge status-confirmed">Confirmed</span></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#" class="po-name-link">PO Name 0021.67.23</a></td>
+                                <td>LOCAL</td>
+                                <td>Shop03</td>
+                                <td>245</td>
+                                <td>788.00</td>
+                                <td>07/25/2025</td>
+                                <td>08/14/2025</td>
+                                <td><span class="status-badge status-confirmed">Confirmed</span></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#" class="po-name-link">PO Name 0021.67.23</a></td>
+                                <td>LOCAL</td>
+                                <td>Shop03</td>
+                                <td>245</td>
+                                <td>788.00</td>
+                                <td>07/25/2025</td>
+                                <td>08/14/2025</td>
+                                <td><span class="status-badge status-confirmed">Confirmed</span></td>
+                            </tr>
                         </tbody>
                     </table>
                 </section>
@@ -357,31 +416,6 @@
                     a.closest('li').classList.remove('active');
                 }
             });
-
-            // Populate purchases table from data.js
-            function populatePurchasesTable() {
-                const tableBody = document.getElementById('purchasesTableBody');
-                tableBody.innerHTML = '';
-
-                purchases.forEach(purchase => {
-                    const row = document.createElement('tr');
-                    const statusClass = purchase.status === 'Confirmed' ? 'status-confirmed' : 'status-editing';
-                    row.innerHTML = `
-                        <td><a href="#" class="po-name-link">${purchase.poNumber}</a></td>
-                        <td>${purchase.type}</td>
-                        <td>${purchase.supplier}</td>
-                        <td>${purchase.quantity}</td>
-                        <td>₱${purchase.totalCost.toFixed(2)}</td>
-                        <td>${purchase.poDate}</td>
-                        <td>${purchase.estimatedArrival}</td>
-                        <td><span class="status-badge ${statusClass}">${purchase.status}</span></td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            }
-
-            // Call function when page loads
-            populatePurchasesTable();
         })();
     </script>
 </body>

@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
-        /* Basic Reset */
         * {
             margin: 0;
             padding: 0;
@@ -19,16 +18,13 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* --- 1. Dashboard Grid Layout --- */
         .dashboard-container {
             display: grid;
             grid-template-columns: 200px 1fr;
             min-height: 100vh;
         }
 
-        /* --- 2. Sidebar Styling --- */
         .sidebar {
-            /* now styled globally via style.css palette; keep padding */
             padding-top: 20px;
         }
 
@@ -67,7 +63,6 @@
             width: 20px;
         }
 
-        /* Active link styling */
         .nav-links li.active a {
             background-color: #7966a3;
             color: white;
@@ -80,15 +75,13 @@
             color: white;
         }
 
-        /* --- 3. Main Content Area --- */
         .main-content {
-            background-color: #f5f2e3; /* Beige/Cream background */
+            background-color: #f5f2e3;
             padding: 30px;
             position: relative;
             overflow: hidden;
         }
 
-        /* Large Background Icon Overlay (Same as previous views) */
         .background-icon-overlay {
             position: absolute;
             top: 50%;
@@ -97,12 +90,11 @@
             width: 70%;
             height: 70%;
             background-color: #b8c4ae;
-            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm289-106.6C321.4 126.9 352 135.9 352 176c0 31.8-11.8 45-20.5 56.4c-4.9 6.2-9.2 12.8-13 19.8c-20 37.9-20 84.1-20 122.9V416H184V375c0-38.9 0-85.1-20-122.9c-3.8-7-8.1-13.6-13-19.8C140 221 128 207.8 128 176c0-40.1 30.6-49.1 63-76.8c32.4-27.7 77-27.7 109.4 0zm10.7-33.4C261 144.3 226.7 144.3 200 171.8c-26.7 27.5-63 24.3-63 60.2c0 14.5 4.3 25.1 8.8 33.3c7.2 13.1 16.5 25.5 27.8 36.8c11.3 11.3 23.7 20.6 36.8 27.8c8.2 4.5 18.8 8.8 33.3 8.8h.2c1.7 0 3.4 0 5.1-.1v-48c0-13.3 10.7-24 24-24s24 10.7 24 24v48c1.7 0 3.4 0 5.1.1h.2c14.5 0 25.1-4.3 33.3-8.8c13.1-7.2 25.5-16.5 36.8-27.8c11.3-11.3 20.6-23.7 27.8-36.8c4.5-8.2 8.8-18.8 8.8-33.3c0-35.9-36.3-32.7-63-60.2c-26.7-27.5-61-27.5-87.7 0z"/></svg>');
+            mask: url('LOGO.png') no-repeat center center/contain;
             opacity: 0.4;
             pointer-events: none;
         }
 
-        /* DASHBOARD CARDS STYLES (Kept for completeness) */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -111,7 +103,6 @@
             position: relative;
         }
 
-        /* MANAGE USERS STYLES (Kept for completeness) */
         .page-header {
             display: flex;
             justify-content: space-between;
@@ -125,8 +116,6 @@
             font-weight: 500;
         }
 
-
-        /* --- 6. Medicine Inventory Table Styles --- */
         .medicine-header {
             font-family: "French Script MT", cursive;
             text-align: center;
@@ -142,17 +131,17 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
             overflow: hidden;
             position: relative;
-            z-index: 10; /* Above the background icon */
+            z-index: 10;
         }
 
         .medicine-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.9em; /* Slightly smaller font for dense data */
+            font-size: 0.9em;
         }
 
         .medicine-table thead {
-            background-color: #f5f2e3; /* Light background for the header */
+            background-color: #ede3ad;
         }
 
         .medicine-table th {
@@ -160,31 +149,29 @@
             padding: 12px 8px;
             font-weight: 600;
             color: #333;
-            white-space: nowrap; /* Prevent headers from wrapping */
+            white-space: nowrap;
         }
         
-        /* Column widths for the simplified medicine table */
-        .medicine-table th:nth-child(1) { width: 4%; } /* Checkbox */
-        .medicine-table th:nth-child(2) { width: 28%; } /* Product */
-        .medicine-table th:nth-child(3) { width: 34%; } /* Description */
-        .medicine-table th:nth-child(4) { width: 10%; } /* Price */
-        .medicine-table th:nth-child(5) { width: 8%; } /* UoM */
-        .medicine-table th:nth-child(6) { width: 8%; text-align: right;} /* Qty */
-        .medicine-table th:nth-child(7) { width: 5%; text-align: right;} /* Delta */
-        .medicine-table th:nth-child(8) { width: 3%; } /* Note */
+        .medicine-table th:nth-child(1) { width: 4%; }
+        .medicine-table th:nth-child(2) { width: 28%; }
+        .medicine-table th:nth-child(3) { width: 34%; }
+        .medicine-table th:nth-child(4) { width: 10%; }
+        .medicine-table th:nth-child(5) { width: 8%; }
+        .medicine-table th:nth-child(6) { width: 8%; text-align: right;}
+        .medicine-table th:nth-child(7) { width: 5%; text-align: right;}
+        .medicine-table th:nth-child(8) { width: 3%; }
 
         .medicine-table td {
             padding: 5px 8px;
             color: #555;
             border-bottom: 1px solid #eeeeee;
-            vertical-align: top; /* Align top for multi-line cells */
+            vertical-align: top;
         }
 
         .medicine-table tr:hover {
             background-color: #f9f9f9;
         }
 
-        /* Product column styling (Brand Name/Generic Name) */
         .product-cell .brand-name {
             font-weight: bold;
             color: #333;
@@ -197,7 +184,6 @@
             line-height: 1.1;
         }
 
-        /* Two-line data columns (Str/Form, Lot/Exp, Prgm/Loc) */
         .two-line-data .top-line {
             font-weight: 600;
             color: #333;
@@ -210,17 +196,16 @@
             line-height: 1.1;
         }
 
-        /* Highlighting for low stock (Delta = -3) */
         .low-stock-row {
-            background-color: #e0f7fa; /* Light teal row highlight */
+            background-color: #e0f7fa;
         }
         .low-stock-qty {
             font-weight: bold;
-            color: #c0392b; /* Red text for low quantity */
+            color: #c0392b;
         }
         .delta-negative {
             font-weight: bold;
-            color: #c0392b; /* Red text for negative delta */
+            color: #c0392b;
         }
 
         .edit-icon {
@@ -267,7 +252,6 @@
 
                 <h1 class="medicine-header">Pharmacia</h1>
 
-                <!-- Search / Filter / Controls -->
                 <div style="margin-bottom:12px; display:flex; gap:10px; align-items:center;">
                     <input id="searchInput" type="search" placeholder="Search by name or category" style="flex:1; padding:8px 10px; border-radius:6px; border:1px solid #ddd;" />
                     <select title="Filter by category" id="categoryFilter" style="padding:8px 10px; border-radius:6px; border:1px solid #ddd;">
@@ -291,20 +275,15 @@
                             </tr>
                         </thead>
                         <tbody id="medicine-tbody">
-                            <!-- Rows will be populated from data.js `items` array -->
                         </tbody>
                     </table>
                 </section>
             </div>
         </div>
     </div>
-    <!-- load data.js which defines `items` -->
-    <script src="data.js"></script>
-
     <script src="data.js"></script>
 
     <script>
-        // Highlight active sidebar link based on filename
         (function(){
             const links = document.querySelectorAll('.nav-links a');
             const current = location.pathname.split('/').pop() || 'medicine.html';
@@ -319,9 +298,7 @@
             });
         })();
 
-        // Require login & Render items from data.js into the medicine table with search/filter and sorting
         document.addEventListener('DOMContentLoaded', () => {
-            // basic login guard: redirect to login page if not logged in
             try {
                 const name = sessionStorage.getItem('loggedInUser');
                 if (!name) {
@@ -350,7 +327,6 @@
                 return;
             }
 
-            // populate category filter options
             const categories = Array.from(new Set(items.map(i => i.category))).sort();
             categories.forEach(cat => {
                 const opt = document.createElement('option');
@@ -359,11 +335,9 @@
                 categoryFilter.appendChild(opt);
             });
 
-            // Helper to escape HTML
             function esc(s){ return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-            // State for sorting
-            let sortState = { key: null, dir: 1 }; // dir: 1 asc, -1 desc
+            let sortState = { key: null, dir: 1 };
 
             function applyFiltersAndRender() {
                 const q = (searchInput.value || '').toLowerCase().trim();
@@ -375,7 +349,6 @@
                     return (it.name && it.name.toLowerCase().includes(q)) || (it.category && it.category.toLowerCase().includes(q)) || (it.description && it.description.toLowerCase().includes(q));
                 });
 
-                // Apply sort
                 if (sortState.key) {
                     out.sort((a,b) => {
                         const A = a[sortState.key] ?? 0;
@@ -415,18 +388,15 @@
                 });
             }
 
-            // wire search and filter
             searchInput.addEventListener('input', () => applyFiltersAndRender());
             categoryFilter.addEventListener('change', () => applyFiltersAndRender());
             clearFilters.addEventListener('click', () => { searchInput.value=''; categoryFilter.value=''; applyFiltersAndRender(); });
 
-            // wire sortable headers
             sortableHeaders.forEach(h => {
                 h.style.cursor = 'pointer';
                 h.addEventListener('click', () => {
                     const key = h.getAttribute('data-key');
                     if (sortState.key === key) sortState.dir *= -1; else { sortState.key = key; sortState.dir = 1; }
-                    // update sort icons (basic)
                     document.querySelectorAll('.medicine-table th.sortable i').forEach(i => i.className = 'fas fa-sort');
                     const icon = h.querySelector('i');
                     if (icon) icon.className = sortState.dir === 1 ? 'fas fa-sort-up' : 'fas fa-sort-down';
@@ -434,7 +404,6 @@
                 });
             });
 
-            // initial render
             applyFiltersAndRender();
         });
     </script>
