@@ -154,7 +154,18 @@ body {
     color: #4c5d26; /* Darker color for visibility on light background */
 }
 
-/* Ensure main content sits above watermark */
+/* Subtle branded watermark using LOGO.png (low opacity, non-interactive) */
+.watermark-bg {
+    position: fixed;
+    inset: 0; /* top:0; right:0; bottom:0; left:0 */
+    pointer-events: none;
+    z-index: 11;
+    background: url('LOGO.png')no-repeat center center/350px auto;
+    left: 10%;
+    opacity: 0.2;
+    mix-blend-mode: normal;
+}
+/* Ensure main content and interactive elements sit above watermark */
 .dashboard-container,
 .main-content,
 .cards-grid,

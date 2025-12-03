@@ -8,6 +8,14 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="data.js"></script>
+    <style>
+        .cards-grid {
+            overflow: hidden;
+        }
+        .dashboard-container .main-content {
+            overflow: hidden;
+        }
+    </style>
 </head>
 
 <body>
@@ -73,7 +81,6 @@
         </div>
     </div>
     <script>
-        // Load and populate dashboard with data
         function populateDashboard() {
             try {
                 if (typeof dashboardStats !== 'undefined') {
@@ -89,19 +96,18 @@
             }
         }
 
-        // Require login: redirect to LogIN.html if no loggedInUser
         (function () {
             try {
                 const name = sessionStorage.getItem('loggedInUser');
                 if (!name) {
-                    // not logged in -> send to login
+                
                     window.location.replace('LogIN.html');
                     return;
                 }
                 const el = document.getElementById('userDisplay');
                 if (el) el.textContent = name;
 
-                // logout handler
+                
                 const logout = document.getElementById('logoutLink');
                 if (logout) {
                     logout.addEventListener('click', (e) => {
@@ -111,7 +117,7 @@
                     });
                 }
 
-                // Highlight active sidebar link based on current page
+                
                 const links = document.querySelectorAll('.nav-links a');
                 const current = location.pathname.split('/').pop() || 'dashboard.html';
                 links.forEach(a => {
@@ -124,7 +130,7 @@
                     }
                 });
 
-                // Populate dashboard data
+             
                 populateDashboard();
             } catch (err) {
                 console.warn('Login check failed', err);

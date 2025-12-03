@@ -6,7 +6,6 @@
     <title>Purchases - Pharmacy Inventory</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <script src="data.js"></script>
 
     <style>
         /* Basic Reset and Global Styles */
@@ -27,6 +26,22 @@
         /* Main Content Styles */
         .main-content { background-color: #f5f2e3; padding: 30px; position: relative; overflow: hidden; }
 
+        /* Background Icon Overlay */
+        .background-icon-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: 70%;
+            background-color: #b8c4ae;
+            mask: url('LOGO.png');
+            mask-repeat: no-repeat;
+            mask-size: contain;
+            mask-position: center;
+            pointer-events: none;
+        }
+        
         /* --- Purchase Order Styles --- */
         .po-header {
             font-size: 2em;
@@ -184,7 +199,7 @@
         }
 
         .po-table thead {
-            background-color: #f5f2e3;
+            background-color: #f1e9bf;
         }
 
         .po-table th {
@@ -283,13 +298,13 @@
                     <div style="display: flex; align-items: center;">
                         <label for="search">Search</label>
                         <input type="text" id="search" class="search-input" placeholder="Search">
-                        <select class="dropdown" aria-label="Filter by type" title="Filter by type">
+                        <select class="dropdown">
                             <option>All Types</option>
                         </select>
-                        <select class="dropdown" aria-label="Filter by supplier" title="Filter by supplier">
+                        <select class="dropdown">
                             <option>All Suppliers</option>
                         </select>
-                        <select class="dropdown" aria-label="Filter by status" title="Filter by status">
+                        <select class="dropdown">
                             <option>All Statuses</option>
                         </select>
                         <label class="checkbox-label"><input type="checkbox"> Show Archive</label>
@@ -311,8 +326,67 @@
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody id="purchasesTableBody">
-                            <!-- Purchases will be populated from data.js -->
+                        <tbody>
+                            <tr>
+                                <td><a href="#" class="po-name-link">PO Name 0021.67.23</a></td>
+                                <td>LOCAL</td>
+                                <td>Shop35</td>
+                                <td>500</td>
+                                <td>7,788.00</td>
+                                <td>07/25/2025</td>
+                                <td>08/14/2025</td>
+                                <td><span class="status-badge status-editing">Editing</span></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#" class="po-name-link">PO Name 0021.67.23</a></td>
+                                <td>DIRECT</td>
+                                <td>Shop03</td>
+                                <td>245</td>
+                                <td>788.00</td>
+                                <td>07/25/2025</td>
+                                <td>08/14/2025</td>
+                                <td><span class="status-badge status-confirmed">Confirmed</span></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#" class="po-name-link">PO Name 0021.67.23</a></td>
+                                <td>LOCAL</td>
+                                <td>Shop03</td>
+                                <td>245</td>
+                                <td>788.00</td>
+                                <td>07/25/2025</td>
+                                <td>08/14/2025</td>
+                                <td><span class="status-badge status-confirmed">Confirmed</span></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#" class="po-name-link">PO Name 0021.67.23</a></td>
+                                <td>DIRECT</td>
+                                <td>Shop03</td>
+                                <td>245</td>
+                                <td>788.00</td>
+                                <td>07/25/2025</td>
+                                <td>08/14/2025</td>
+                                <td><span class="status-badge status-confirmed">Confirmed</span></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#" class="po-name-link">PO Name 0021.67.23</a></td>
+                                <td>LOCAL</td>
+                                <td>Shop03</td>
+                                <td>245</td>
+                                <td>788.00</td>
+                                <td>07/25/2025</td>
+                                <td>08/14/2025</td>
+                                <td><span class="status-badge status-confirmed">Confirmed</span></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#" class="po-name-link">PO Name 0021.67.23</a></td>
+                                <td>LOCAL</td>
+                                <td>Shop03</td>
+                                <td>245</td>
+                                <td>788.00</td>
+                                <td>07/25/2025</td>
+                                <td>08/14/2025</td>
+                                <td><span class="status-badge status-confirmed">Confirmed</span></td>
+                            </tr>
                         </tbody>
                     </table>
                 </section>
