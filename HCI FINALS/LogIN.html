@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pharmacia Management System - Login</title>
     <style>
-        /* --- CSS Reset & Variables --- */
         :root {
-            --bg-left: #013A28;  /* Deep Dark Green */
-            --bg-right: #0E6B48; /* Lighter Pharmacy Green */
+            --bg-left: #013A28;
+            --bg-right: #0E6B48;
             --glass-bg: rgba(255, 255, 255, 0.1);
             --text-color: #ffffff;
             --input-bg: rgba(255, 255, 255, 0.8);
-            --btn-color: #2ECC71; /* Bright Green for CTA */
+            --btn-color: #2ECC71;
             --btn-hover: #27ae60;
         }
 
@@ -23,18 +22,15 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* --- Layout --- */
         body {
             height: 100vh;
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Creating the split background effect */
             background: linear-gradient(90deg, var(--bg-left) 50%, var(--bg-right) 50%);
         }
 
-        /* --- Main Card Container --- */
         .login-container {
             width: 900px;
             height: 550px;
@@ -46,7 +42,6 @@
             border: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* --- Left Side (Form) --- */
         .form-section {
             flex: 1;
             padding: 0px;
@@ -54,7 +49,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: rgba(1, 58, 40, 0.85); /* Slightly darker overlay */
+            background: rgba(1, 58, 40, 0.85);
             color: var(--text-color);
         }
 
@@ -81,9 +76,8 @@
             font-size: 1.2rem;
         }
 
-        /* --- Inputs --- */
         .input-group {
-            width: 220px; /* narrow inputs like reference */
+            width: 220px;
             margin-bottom: 15px;
             position: relative;
         }
@@ -93,7 +87,7 @@
             padding: 10px 12px;
             border: none;
             border-radius: 4px;
-            background: #e9f2ec; /* light muted input like reference */
+            background: #e9f2ec;
             font-size: 13px;
             outline: none;
             transition: all 0.25s ease;
@@ -138,7 +132,6 @@
             color: white;
         }
 
-        /* --- Buttons --- */
         .btn {
             width: 100%;
             padding: 12px;
@@ -154,7 +147,7 @@
         .btn-signin {
             background-color: var(--btn-color);
             color: white;
-            width: 160px; /* center and narrow like reference */
+            width: 160px;
             margin: 0 auto 10px;
             display: block;
             border-radius: 20px;
@@ -166,10 +159,8 @@
             transform: translateY(-2px);
         }
 
-        /* hide register button for the reference look */
         .btn-register { display: none; }
 
-        /* --- Right Side (Image) --- */
         .image-section {
             flex: 1;
             position: relative;
@@ -180,11 +171,44 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: none; /* keep original pill photo colors */
-            transform: translateX(6px); /* small offset like reference crop */
+            filter: none;
+            transform: translateX(6px);
         }
 
-        /* --- Responsive Design --- */
+        /* --- NEW CSS FOR LOADING SCREEN --- */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7); /* Semi-transparent dark background */
+            display: none; /* Initially hidden */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure it's on top of everything */
+            color: white;
+            font-size: 1.5rem;
+            flex-direction: column;
+        }
+
+        .spinner {
+            border: 5px solid #f3f3f3; /* Light grey */
+            border-top: 5px solid var(--btn-color); /* Green spinner */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* ---------------------------------- */
+
+
         @media (max-width: 768px) {
             body {
                 background: var(--bg-left);
@@ -195,7 +219,7 @@
                 flex-direction: column;
             }
             .image-section {
-                display: none; /* Hide image on mobile for cleaner look */
+                display: none;
             }
             .form-section {
                 padding: 40px 20px;
@@ -239,28 +263,28 @@
 
     </div>
 
-    <!-- load data.js so we can use `credentials` if present -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <span>Authenticating...</span>
+    </div>
     <script src="data.js"></script>
     <script>
-        // Simple client-side authentication + redirect demo
-        // NOTE: This is only suitable for demos/prototypes. Do NOT rely on client-side auth for real security.
         document.addEventListener('DOMContentLoaded', () => {
             const loginForm = document.getElementById('loginForm');
             const usernameInput = document.getElementById('username');
             const passwordInput = document.getElementById('password');
             const errorMsg = document.getElementById('errorMsg');
             const togglePassBtn = document.getElementById('togglePass');
+            const loadingOverlay = document.getElementById('loadingOverlay'); // <--- NEW ELEMENT REFERENCE
 
-            // Hard-coded demo credentials (for prototype/testing only)
+            // NOTE: 'credentials' is expected to be defined in data.js, but fallback defined below
             const validUsers = {
                 'admin': 'admin123',
                 'user1': 'password1'
             };
 
-            // Helper: check credentials using data.js `credentials` if available,
-            // otherwise fall back to `validUsers` map.
             function checkCredentials(inputUser, inputPass) {
-                // Use credentials from data.js if present
+                // Check against credentials loaded from data.js (if available)
                 if (typeof credentials !== 'undefined' && credentials && credentials.username) {
                     const storedUser = String(credentials.username || '');
                     const storedPass = String(credentials.password || '');
@@ -270,9 +294,8 @@
                     return { ok: false };
                 }
 
-                // Fallback to multiple demo users
+                // Check against hardcoded fallback users
                 if (validUsers[inputUser] && validUsers[inputUser] === inputPass) {
-                    // Use the raw inputUser as display name
                     return { ok: true, displayName: inputUser };
                 }
                 return { ok: false };
@@ -288,7 +311,6 @@
                 errorMsg.textContent = '';
             }
 
-            // Password reveal toggle
             if (togglePassBtn) {
                 togglePassBtn.addEventListener('click', () => {
                     const isHidden = passwordInput.type === 'password';
@@ -313,35 +335,36 @@
                     return;
                 }
 
-                // Check against credentials (data.js) or fallback demo users
                 const result = checkCredentials(user, pass);
                 if (result.ok) {
-                    // Optional visual feedback
-                    const btn = document.querySelector('.btn-signin');
-                    const originalText = btn.innerText;
-                    btn.innerText = 'LOGGING IN...';
-                    btn.style.opacity = '0.8';
-
-                    // Short delay to show feedback, then redirect
+                    // 1. Show the loading overlay
+                    if (loadingOverlay) {
+                        loadingOverlay.style.display = 'flex';
+                    }
+                    
+                    // 2. Simulate network delay (600ms)
                     setTimeout(() => {
-                        // Store logged-in user display name in sessionStorage so other pages can show it
+                        // 3. Hide the loading overlay before redirect
+                        if (loadingOverlay) {
+                            loadingOverlay.style.display = 'none';
+                        }
+                        
                         try {
                             sessionStorage.setItem('loggedInUser', result.displayName || user);
                         } catch (err) {
                             console.warn('Could not write sessionStorage', err);
                         }
 
-                        // Redirect to dashboard on successful login
                         console.log('Login successful — redirecting to dashboard.html');
+                        // Redirection logic
                         try {
-                            // primary method
                             window.location.href = 'dashboard.html';
                         } catch (err) {
                             console.warn('href redirect failed, trying assign/replace fallback', err);
                             try { window.location.assign('dashboard.html'); } catch(e) {}
                             try { window.location.replace('dashboard.html'); } catch(e) {}
                         }
-                    }, 600);
+                    }, 1800); // Wait 600ms before redirecting
                 } else {
                     showError('Invalid username or password.');
                 }

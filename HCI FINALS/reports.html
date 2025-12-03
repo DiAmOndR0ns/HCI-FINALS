@@ -52,6 +52,74 @@
             text-align: center;
             padding: 15px 0;
         }
+        .sales-per-month-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        .sales-per-month-table th {
+            background-color: #f0f0f0;
+            padding: 8px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #0E6B48;
+            color: #000;
+        }
+        .sales-per-month-table td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            color: #000;
+        }
+        .sales-per-month-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        .download-btn {
+            background-color: #0E6B48;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .download-btn:hover {
+            background-color: #0a4f35;
+        }
+        .download-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .download-options {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            padding: 12px 0;
+            z-index: 1;
+            border-radius: 4px;
+            top: 100%;
+            right: 0;
+        }
+        .download-options.show {
+            display: block;
+        }
+        .download-options a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        .download-options a:hover {
+            background-color: #f1f1f1;
+        }
     </style>
 </head>
 
@@ -79,7 +147,17 @@
         </aside>
 
         <div class="main-content">
-            <h1 style="color: #333; margin-bottom: 20px;">Business Reports & Analytics</h1>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h1 style="color: #333; margin: 0;">Business Reports & Analytics</h1>
+                <div class="download-dropdown">
+                    <button class="download-btn" id="downloadMenuBtn"><i class="fas fa-download"></i> Download Report</button>
+                    <div class="download-options" id="downloadMenu">
+                        <a onclick="downloadFullReport()"><i class="fas fa-file-pdf"></i> Full Report (PDF)</a>
+                        <a onclick="downloadSalesMonthReport()"><i class="fas fa-file-csv"></i> Sales Per Month (CSV)</a>
+                        <a onclick="downloadSummaryReport()"><i class="fas fa-file-excel"></i> Summary Report (Excel)</a>
+                    </div>
+                </div>
+            </div>
             
             <div class="reports-analytics">
                 <!-- Revenue Section -->
@@ -150,6 +228,29 @@
                         <span class="analytics-value" id="inactiveUsers">0</span>
                     </div>
                 </div>
+
+                <!-- Sales Per Month -->
+                <div class="analytics-card" style="grid-column: 1 / -1;">
+                    <h3><i class="fas fa-chart-line" style="margin-right: 8px;"></i>Sales Per Month</h3>
+                    <table class="sales-per-month-table">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>Total Sales</th>
+                                <th>Number of Transactions</th>
+                                <th>Average Sale</th>
+                                <th>Min Sale</th>
+                                <th>Max Sale</th>
+                                <th>Growth %</th>
+                            </tr>
+                        </thead>
+                        <tbody id="salesPerMonthBody">
+                            <tr>
+                                <td colspan="7" style="text-align: center; color: #999;">Loading data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -214,10 +315,160 @@
                     document.getElementById('totalUsers').textContent = formatNumber(users.length);
                     document.getElementById('activeUsers').textContent = formatNumber(users.filter(u => u.status === 'Active').length);
                     document.getElementById('inactiveUsers').textContent = formatNumber(users.filter(u => u.status === 'Inactive').length);
+
+                    // Sales Per Month
+                    const salesData = {};
+                    sales.forEach(s => {
+                        const month = new Date(s.date).toLocaleString('default', { month: 'long' });
+                        if (!salesData[month]) {
+                            salesData[month] = { totalSales: 0, transactionCount: 0, sales: [] };
+                        }
+                        salesData[month].totalSales += s.total;
+                        salesData[month].transactionCount += 1;
+                        salesData[month].sales.push(s.total);
+                    });
+                    const salesPerMonthBody = document.getElementById('salesPerMonthBody');
+                    salesPerMonthBody.innerHTML = '';
+                    let previousTotal = 0;
+                    Object.keys(salesData).forEach((month, index) => {
+                        const { totalSales, transactionCount, sales: monthSales } = salesData[month];
+                        const avgSale = transactionCount > 0 ? totalSales / transactionCount : 0;
+                        const minSale = Math.min(...monthSales);
+                        const maxSale = Math.max(...monthSales);
+                        const growth = previousTotal > 0 ? ((totalSales - previousTotal) / previousTotal * 100).toFixed(2) : 0;
+                        const row = `<tr>
+                            <td>${month}</td>
+                            <td>${formatCurrency(totalSales)}</td>
+                            <td>${formatNumber(transactionCount)}</td>
+                            <td>${formatCurrency(avgSale)}</td>
+                            <td>${formatCurrency(minSale)}</td>
+                            <td>${formatCurrency(maxSale)}</td>
+                            <td>${growth}%</td>
+                        </tr>`;
+                        salesPerMonthBody.insertAdjacentHTML('beforeend', row);
+                        previousTotal = totalSales;
+                    });
                 }
 
                 // Call function when page loads
                 populateAnalytics();
+
+                // Download functionality
+                document.getElementById('downloadMenuBtn').addEventListener('click', function() {
+                    document.getElementById('downloadMenu').classList.toggle('show');
+                });
+
+                window.downloadFullReport = function() {
+                    const report = generateFullReport();
+                    downloadAsFile(report, 'Pharmacy_Full_Report_' + new Date().toISOString().split('T')[0] + '.txt');
+                };
+
+                window.downloadSalesMonthReport = function() {
+                    const csv = generateSalesMonthCSV();
+                    downloadAsFile(csv, 'Pharmacy_Sales_Per_Month_' + new Date().toISOString().split('T')[0] + '.csv', 'text/csv');
+                };
+
+                window.downloadSummaryReport = function() {
+                    const report = generateSummaryReport();
+                    downloadAsFile(report, 'Pharmacy_Summary_Report_' + new Date().toISOString().split('T')[0] + '.txt');
+                };
+
+                function generateFullReport() {
+                    const totalRevenue = sales.reduce((sum, s) => sum + s.total, 0);
+                    const avgTransaction = sales.length > 0 ? totalRevenue / sales.length : 0;
+                    let report = '====== PHARMACY MANAGEMENT SYSTEM - FULL REPORT ======\n';
+                    report += 'Generated: ' + new Date().toLocaleString() + '\n\n';
+                    
+                    report += '--- SALES SUMMARY ---\n';
+                    report += 'Total Revenue: ' + formatCurrency(totalRevenue) + '\n';
+                    report += 'Total Transactions: ' + sales.length + '\n';
+                    report += 'Average Transaction: ' + formatCurrency(avgTransaction) + '\n\n';
+                    
+                    report += '--- INVENTORY STATUS ---\n';
+                    report += 'Total Items: ' + items.length + '\n';
+                    report += 'Low Stock Items: ' + items.filter(i => i.stock < 20).length + '\n';
+                    report += 'Expired Items: ' + items.filter(i => i.expirationType === 'expired').length + '\n';
+                    report += 'Near Expiry Items: ' + items.filter(i => i.expirationType === 'near-expiry').length + '\n\n';
+                    
+                    report += '--- PURCHASE ORDERS ---\n';
+                    report += 'Total POs: ' + purchases.length + '\n';
+                    report += 'Confirmed POs: ' + purchases.filter(p => p.status === 'Confirmed').length + '\n';
+                    report += 'Pending POs: ' + purchases.filter(p => p.status === 'Editing').length + '\n\n';
+                    
+                    report += '--- USER STATISTICS ---\n';
+                    report += 'Total Users: ' + users.length + '\n';
+                    report += 'Active Users: ' + users.filter(u => u.status === 'Active').length + '\n';
+                    report += 'Inactive Users: ' + users.filter(u => u.status === 'Inactive').length + '\n';
+                    
+                    return report;
+                }
+
+                function generateSummaryReport() {
+                    const totalRevenue = sales.reduce((sum, s) => sum + s.total, 0);
+                    const avgTransaction = sales.length > 0 ? totalRevenue / sales.length : 0;
+                    let report = 'PHARMACY MANAGEMENT SYSTEM - SUMMARY REPORT\n';
+                    report += 'Date: ' + new Date().toLocaleString() + '\n\n';
+                    
+                    report += 'SALES SUMMARY\n';
+                    report += '  Total Revenue: ' + formatCurrency(totalRevenue) + '\n';
+                    report += '  Total Transactions: ' + sales.length + '\n';
+                    report += '  Average per Transaction: ' + formatCurrency(avgTransaction) + '\n\n';
+                    
+                    report += 'INVENTORY OVERVIEW\n';
+                    report += '  Total Items: ' + items.length + '\n';
+                    report += '  Low Stock: ' + items.filter(i => i.stock < 20).length + '\n';
+                    report += '  Expired: ' + items.filter(i => i.expirationType === 'expired').length + '\n';
+                    report += '  Near Expiry: ' + items.filter(i => i.expirationType === 'near-expiry').length + '\n\n';
+                    
+                    report += 'PURCHASE ORDERS\n';
+                    report += '  Total Orders: ' + purchases.length + '\n';
+                    report += '  Confirmed: ' + purchases.filter(p => p.status === 'Confirmed').length + '\n';
+                    report += '  Pending: ' + purchases.filter(p => p.status === 'Editing').length + '\n\n';
+                    
+                    report += 'USER MANAGEMENT\n';
+                    report += '  Total Users: ' + users.length + '\n';
+                    report += '  Active: ' + users.filter(u => u.status === 'Active').length + '\n';
+                    report += '  Inactive: ' + users.filter(u => u.status === 'Inactive').length + '\n';
+                    
+                    return report;
+                }
+
+                function generateSalesMonthCSV() {
+                    const salesData = {};
+                    sales.forEach(s => {
+                        const month = new Date(s.date).toLocaleString('default', { month: 'long' });
+                        if (!salesData[month]) {
+                            salesData[month] = { totalSales: 0, transactionCount: 0, sales: [] };
+                        }
+                        salesData[month].totalSales += s.total;
+                        salesData[month].transactionCount += 1;
+                        salesData[month].sales.push(s.total);
+                    });
+                    let csv = 'Month,Total Sales,Number of Transactions,Average Sale,Min Sale,Max Sale,Growth %\n';
+                    let previousTotal = 0;
+                    Object.keys(salesData).forEach(month => {
+                        const { totalSales, transactionCount, sales: monthSales } = salesData[month];
+                        const avgSale = transactionCount > 0 ? totalSales / transactionCount : 0;
+                        const minSale = Math.min(...monthSales);
+                        const maxSale = Math.max(...monthSales);
+                        const growth = previousTotal > 0 ? ((totalSales - previousTotal) / previousTotal * 100).toFixed(2) : 0;
+                        csv += month + ',' + totalSales.toFixed(2) + ',' + transactionCount + ',' + avgSale.toFixed(2) + ',' + minSale.toFixed(2) + ',' + maxSale.toFixed(2) + ',' + growth + '\n';
+                        previousTotal = totalSales;
+                    });
+                    return csv;
+                }
+
+                function downloadAsFile(content, filename, type = 'text/plain') {
+                    const blob = new Blob([content], { type: type });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                }
             } catch (err) {
                 console.warn('Login check failed', err);
             }

@@ -7,6 +7,161 @@
     <title>Settings - Pharmacy Management</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .settings-container {
+            max-width: 900px;
+        }
+        
+        .settings-section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: #007bff;
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        
+        .setting-label {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .setting-label .label-title {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        
+        .setting-label .label-desc {
+            font-size: 0.9em;
+            color: #999;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background-color: #ccc;
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .toggle-switch.active {
+            background-color: #28a745;
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background-color: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: left 0.3s;
+        }
+        
+        .toggle-switch.active::after {
+            left: 26px;
+        }
+        
+        .form-control {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.95em;
+            font-family: inherit;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .btn-save, .btn-reset {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-save {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .btn-save:hover {
+            background-color: #0056b3;
+        }
+        
+        .btn-reset {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-reset:hover {
+            background-color: #545b62;
+        }
+        
+        .status-message {
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        
+        .status-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        
+        .status-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+    </style>
 </head>
 
 <body>
@@ -34,8 +189,154 @@
 
         <div class="main-content">
             <h1 style="color: #333; margin-bottom: 20px;">Settings</h1>
-            <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                <p style="color: #666; font-size: 1em;">Application settings and preferences will be displayed here.</p>
+            <div class="settings-container">
+                <div id="statusMessage" class="status-message"></div>
+
+                <!-- General Settings -->
+                <div class="settings-section">
+                    <div class="section-title">
+                        <i class="fas fa-sliders-h"></i>
+                        General Settings
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span class="label-title">Application Language</span>
+                            <span class="label-desc">Select your preferred language</span>
+                        </div>
+                        <select id="language" class="form-control" style="width: 150px;">
+                            <option value="en">English</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span class="label-title">Timezone</span>
+                            <span class="label-desc">Set your local timezone</span>
+                        </div>
+                        <select id="timezone" class="form-control" style="width: 150px;">
+                            <option value="UTC">UTC</option>
+                            <option value="EST">Eastern Standard Time</option>
+                            <option value="CST">Central Standard Time</option>
+                            <option value="PST">Pacific Standard Time</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Display Settings -->
+                <div class="settings-section">
+                    <div class="section-title">
+                        <i class="fas fa-palette"></i>
+                        Display Settings
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span class="label-title">Dark Mode</span>
+                            <span class="label-desc">Enable dark theme</span>
+                        </div>
+                        <div id="darkMode" class="toggle-switch"></div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span class="label-title">Compact View</span>
+                            <span class="label-desc">Reduce spacing and text size</span>
+                        </div>
+                        <div id="compactView" class="toggle-switch"></div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span class="label-title">Items Per Page</span>
+                            <span class="label-desc">Default items displayed in tables</span>
+                        </div>
+                        <input id="itemsPerPage" type="number" class="form-control" value="10" min="5" max="100" style="width: 80px;">
+                    </div>
+                </div>
+
+                <!-- Notification Settings -->
+                <div class="settings-section">
+                    <div class="section-title">
+                        <i class="fas fa-bell"></i>
+                        Notification Settings
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span class="label-title">Email Notifications</span>
+                            <span class="label-desc">Receive notifications via email</span>
+                        </div>
+                        <div id="emailNotif" class="toggle-switch active"></div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span class="label-title">Browser Notifications</span>
+                            <span class="label-desc">Desktop push notifications</span>
+                        </div>
+                        <div id="browserNotif" class="toggle-switch"></div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span class="label-title">Low Stock Alerts</span>
+                            <span class="label-desc">Alert when inventory is low</span>
+                        </div>
+                        <div id="stockAlerts" class="toggle-switch active"></div>
+                    </div>
+                </div>
+
+                <!-- Security Settings -->
+                <div class="settings-section">
+                    <div class="section-title">
+                        <i class="fas fa-lock"></i>
+                        Security Settings
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span class="label-title">Two-Factor Authentication</span>
+                            <span class="label-desc">Add extra security to your account</span>
+                        </div>
+                        <div id="twoFactor" class="toggle-switch"></div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span class="label-title">Session Timeout (minutes)</span>
+                            <span class="label-desc">Auto logout after inactivity</span>
+                        </div>
+                        <input id="sessionTimeout" type="number" class="form-control" value="30" min="5" max="240" style="width: 80px;">
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span class="label-title">Activity Logging</span>
+                            <span class="label-desc">Log all user activities</span>
+                        </div>
+                        <div id="activityLogging" class="toggle-switch active"></div>
+                    </div>
+                </div>
+
+                <!-- Account Settings -->
+                <div class="settings-section">
+                    <div class="section-title">
+                        <i class="fas fa-user-circle"></i>
+                        Account Settings
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span class="label-title">Email Address</span>
+                            <span class="label-desc">Your account email</span>
+                        </div>
+                        <input id="email" type="email" class="form-control" placeholder="user@example.com">
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span class="label-title">Phone Number</span>
+                            <span class="label-desc">Contact phone number</span>
+                        </div>
+                        <input id="phone" type="tel" class="form-control" placeholder="+1 (555) 000-0000">
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn-save" id="saveBtn"><i class="fas fa-save"></i> Save Settings</button>
+                        <button class="btn-reset" id="resetBtn"><i class="fas fa-redo"></i> Reset to Default</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -79,6 +380,104 @@
                 console.warn('Login check failed', err);
             }
         })();
+
+        // Settings Management
+        const SETTINGS_KEY = 'pharmacySettings';
+        const DEFAULT_SETTINGS = {
+            language: 'en',
+            timezone: 'UTC',
+            darkMode: false,
+            compactView: false,
+            itemsPerPage: 10,
+            emailNotif: true,
+            browserNotif: false,
+            stockAlerts: true,
+            twoFactor: false,
+            sessionTimeout: 30,
+            activityLogging: true,
+            email: '',
+            phone: ''
+        };
+
+        function loadSettings() {
+            const stored = localStorage.getItem(SETTINGS_KEY);
+            return stored ? JSON.parse(stored) : DEFAULT_SETTINGS;
+        }
+
+        function saveSettings(settings) {
+            localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+            showStatus('Settings saved successfully!', 'success');
+        }
+
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = `status-message ${type}`;
+            setTimeout(() => {
+                statusEl.className = 'status-message';
+            }, 3000);
+        }
+
+        function initializeToggles() {
+            const toggles = document.querySelectorAll('.toggle-switch');
+            toggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    toggle.classList.toggle('active');
+                });
+            });
+        }
+
+        function populateSettings() {
+            const settings = loadSettings();
+            document.getElementById('language').value = settings.language;
+            document.getElementById('timezone').value = settings.timezone;
+            document.getElementById('itemsPerPage').value = settings.itemsPerPage;
+            document.getElementById('sessionTimeout').value = settings.sessionTimeout;
+            document.getElementById('email').value = settings.email;
+            document.getElementById('phone').value = settings.phone;
+
+            if (settings.darkMode) document.getElementById('darkMode').classList.add('active');
+            if (settings.compactView) document.getElementById('compactView').classList.add('active');
+            if (settings.emailNotif) document.getElementById('emailNotif').classList.add('active');
+            if (settings.browserNotif) document.getElementById('browserNotif').classList.add('active');
+            if (settings.stockAlerts) document.getElementById('stockAlerts').classList.add('active');
+            if (settings.twoFactor) document.getElementById('twoFactor').classList.add('active');
+            if (settings.activityLogging) document.getElementById('activityLogging').classList.add('active');
+        }
+
+        function collectSettings() {
+            return {
+                language: document.getElementById('language').value,
+                timezone: document.getElementById('timezone').value,
+                darkMode: document.getElementById('darkMode').classList.contains('active'),
+                compactView: document.getElementById('compactView').classList.contains('active'),
+                itemsPerPage: parseInt(document.getElementById('itemsPerPage').value),
+                emailNotif: document.getElementById('emailNotif').classList.contains('active'),
+                browserNotif: document.getElementById('browserNotif').classList.contains('active'),
+                stockAlerts: document.getElementById('stockAlerts').classList.contains('active'),
+                twoFactor: document.getElementById('twoFactor').classList.contains('active'),
+                sessionTimeout: parseInt(document.getElementById('sessionTimeout').value),
+                activityLogging: document.getElementById('activityLogging').classList.contains('active'),
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value
+            };
+        }
+
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            const settings = collectSettings();
+            saveSettings(settings);
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            if (confirm('Reset all settings to default?')) {
+                localStorage.removeItem(SETTINGS_KEY);
+                populateSettings();
+                showStatus('Settings reset to default', 'success');
+            }
+        });
+
+        initializeToggles();
+        populateSettings();
     </script>
 </body>
 

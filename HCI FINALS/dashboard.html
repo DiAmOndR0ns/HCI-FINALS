@@ -15,6 +15,46 @@
         .dashboard-container .main-content {
             overflow: hidden;
         }
+        
+        .background-icon-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('./LOGO.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 350px auto;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .cards-grid {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .dashboard-logo {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            z-index: 20;
+        }
+        
+        .dashboard-logo img {
+            max-width: 150px;
+            height: auto;
+        }
+        .medicine-header {
+            font-family: "French Script MT", cursive;
+            text-align: center;
+            font-size: 3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 
@@ -43,8 +83,11 @@
                 </ul>
             </nav>
         </aside>
+        
 
         <div class="main-content">
+            <div class="background-icon-overlay"></div>
+            <h1 class="medicine-header">Pharmacia</h1>
             <section class="cards-grid">
                 <div class="card card-blue">
                     <div class="card-icon"><i class="fas fa-box"></i></div>
@@ -78,6 +121,9 @@
                     <p class="card-value" id="expired">0</p>
                 </div>
             </section>
+            <div class="dashboard-logo">
+                <img src="./LOGO.png" alt="Pharmacia Logo">
+            </div>
         </div>
     </div>
     <script>

@@ -85,18 +85,17 @@
 
         .background-icon-overlay {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 70%;
-            height: 70%;
-            background-color: #b8c4ae;
-            mask: url('LOGO.png');
-            mask-repeat: no-repeat;
-            mask-size: contain;
-            mask-position: center;
-            opacity: 0.4;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('./LOGO.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 350px auto;
+            opacity: 0.15;
             pointer-events: none;
+            z-index: 1;
         }
 
         .cards-grid {
@@ -237,6 +236,76 @@
             margin-left: 5px;
             font-size: 0.8em;
         }
+
+        .options-menu-container {
+            position: relative;
+        }
+
+        .user-actions {
+            position: absolute;
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            padding: 8px;
+            min-width: 130px;
+            top: 25px;
+            right: 0;
+            z-index: 100;
+        }
+
+        .user-actions.show {
+            display: flex;
+        }
+
+        .btn-action {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .btn-deactivate {
+            background-color: #ffc107;
+            color: #333;
+        }
+
+        .btn-deactivate:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        .logo-top-right {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            z-index: 20;
+        }
+
+        .logo-top-right img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
     </style>
 </head>
 <body>
@@ -263,6 +332,9 @@
         </aside>
 
         <div class="main-content" id="main-content-area">
+            <div class="logo-top-right">
+                <img src="./LOGO.png" alt="Logo">
+            </div>
 
             <div id="dashboard-view" style="display:none;">
                 <div class="background-icon-overlay"></div>
@@ -306,9 +378,6 @@
 
                 <header class="page-header">
                     <h1>Users (<span id="userCount">5</span>)</h1>
-                    <div class="table-actions">
-                        <i class="fas fa-filter status-filter"></i>
-                    </div>
                 </header>
                 
                 <section class="user-table-container">
@@ -370,7 +439,15 @@
                         <td>${user.role}</td>
                         <td>${user.createdAtDisplay}</td>
                         <td><span style="color: ${statusColor}; font-weight: 600;">${user.status}</span></td>
-                        <td><i class="fas fa-ellipsis-v options-menu"></i></td>
+                        <td>
+                            <div class="options-menu-container">
+                                <i class="fas fa-ellipsis-v options-menu"></i>
+                                <div class="user-actions">
+                                    <button class="btn-action btn-deactivate" data-id="${user.id}">Deactivate</button>
+                                    <button class="btn-action btn-delete" data-id="${user.id}">Delete</button>
+                                </div>
+                            </div>
+                        </td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -385,6 +462,33 @@
             if (typeof users !== 'undefined') {
                 populateUsersTable();
             }
+
+            // Toggle user actions visibility
+            document.addEventListener('click', (e) => {
+                if (e.target.classList.contains('options-menu')) {
+                    const actions = e.target.closest('td').querySelector('.user-actions');
+                    if (actions) {
+                        actions.classList.toggle('show');
+                    }
+                } else {
+                    document.querySelectorAll('.user-actions').forEach(actions => {
+                        actions.classList.remove('show');
+                    });
+                }
+            });
+
+            // Deactivate or delete user
+            document.getElementById('usersTableBody').addEventListener('click', (e) => {
+                if (e.target.classList.contains('btn-deactivate')) {
+                    const userId = e.target.getAttribute('data-id');
+                    // Deactivate user logic here
+                    alert('Deactivate user with ID: ' + userId);
+                } else if (e.target.classList.contains('btn-delete')) {
+                    const userId = e.target.getAttribute('data-id');
+                    // Delete user logic here
+                    alert('Delete user with ID: ' + userId);
+                }
+            });
         })();
     </script>
 </body>
