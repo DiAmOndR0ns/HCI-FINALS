@@ -48,11 +48,11 @@ const items = [
 
 // Users in the pharmacy system
 const users = [
-  { id: 1, username: 'Admin', role: 'Administrator', email: 'admin@pharmacy.com', status: 'Active' },
-  { id: 2, username: 'Aella_Agsoy', role: 'Pharmacist', email: 'aella@pharmacy.com', status: 'Active' },
-  { id: 3, username: 'Joshua_Pesiao', role: 'Cashier', email: 'joshua@pharmacy.com', status: 'Active' },
-  { id: 4, username: 'Ronar_Diamante', role: 'Store Manager', email: 'ronar@pharmacy.com', status: 'Active' },
-  { id: 5, username: 'Estifane_Almento', role: 'Inventory Officer', email: 'estifane@pharmacy.com', status: 'Active' }
+  { id: 1, username: 'Admin', role: 'Administrator', email: 'admin@pharmacy.com', status: 'Active', createdAt: '2025-11-15T08:00:00', createdAtDisplay: 'Nov 15, 2025 08:00 AM', profileImage: 'adminPp.jpeg' },
+  { id: 2, username: 'Aella_Agsoy', role: 'Pharmacist', email: 'aella@pharmacy.com', status: 'Active', createdAt: '2025-11-20T09:30:00', createdAtDisplay: 'Nov 20, 2025 09:30 AM', profileImage: '' },
+  { id: 3, username: 'Joshua_Pesiao', role: 'Cashier', email: 'joshua@pharmacy.com', status: 'Active', createdAt: '2025-11-22T14:15:00', createdAtDisplay: 'Nov 22, 2025 02:15 PM', profileImage: '' },
+  { id: 4, username: 'Ronar_Diamante', role: 'Store Manager', email: 'ronar@pharmacy.com', status: 'Active', createdAt: '2025-11-18T10:45:00', createdAtDisplay: 'Nov 18, 2025 10:45 AM', profileImage: '' },
+  { id: 5, username: 'Estifane_Almento', role: 'Inventory Officer', email: 'estifane@pharmacy.com', status: 'Active', createdAt: '2025-11-25T11:20:00', createdAtDisplay: 'Nov 25, 2025 11:20 AM', profileImage: '' }
 ];
 
 // Sales records (Currency: Philippine Peso ₱)
