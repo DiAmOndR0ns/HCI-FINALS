@@ -56,7 +56,6 @@
 </head>
 
 <body>
-    <div class="watermark-bg" aria-hidden="true"></div>
     <div class="dashboard-container">
         <aside class="sidebar">
             <div class="user-profile">
@@ -196,25 +195,25 @@
                     // Sales Summary
                     const totalRevenue = sales.reduce((sum, s) => sum + s.total, 0);
                     const avgTransaction = sales.length > 0 ? totalRevenue / sales.length : 0;
-                    document.getElementById('totalRevenue').textContent = '₱' + totalRevenue.toFixed(2);
-                    document.getElementById('totalTransactions').textContent = sales.length;
-                    document.getElementById('avgTransaction').textContent = '₱' + avgTransaction.toFixed(2);
+                    document.getElementById('totalRevenue').textContent = formatCurrency(totalRevenue);
+                    document.getElementById('totalTransactions').textContent = formatNumber(sales.length);
+                    document.getElementById('avgTransaction').textContent = formatCurrency(avgTransaction);
 
                     // Inventory Status
-                    document.getElementById('totalItems').textContent = items.length;
-                    document.getElementById('lowStockItems').textContent = items.filter(i => i.stock < 20).length;
-                    document.getElementById('expiredItems').textContent = items.filter(i => i.expirationType === 'expired').length;
-                    document.getElementById('nearExpiryItems').textContent = items.filter(i => i.expirationType === 'near-expiry').length;
+                    document.getElementById('totalItems').textContent = formatNumber(items.length);
+                    document.getElementById('lowStockItems').textContent = formatNumber(items.filter(i => i.stock < 20).length);
+                    document.getElementById('expiredItems').textContent = formatNumber(items.filter(i => i.expirationType === 'expired').length);
+                    document.getElementById('nearExpiryItems').textContent = formatNumber(items.filter(i => i.expirationType === 'near-expiry').length);
 
                     // Purchase Orders
-                    document.getElementById('totalPOs').textContent = purchases.length;
-                    document.getElementById('confirmedPOs').textContent = purchases.filter(p => p.status === 'Confirmed').length;
-                    document.getElementById('pendingPOs').textContent = purchases.filter(p => p.status === 'Editing').length;
+                    document.getElementById('totalPOs').textContent = formatNumber(purchases.length);
+                    document.getElementById('confirmedPOs').textContent = formatNumber(purchases.filter(p => p.status === 'Confirmed').length);
+                    document.getElementById('pendingPOs').textContent = formatNumber(purchases.filter(p => p.status === 'Editing').length);
 
                     // User Statistics
-                    document.getElementById('totalUsers').textContent = users.length;
-                    document.getElementById('activeUsers').textContent = users.filter(u => u.status === 'Active').length;
-                    document.getElementById('inactiveUsers').textContent = users.filter(u => u.status === 'Inactive').length;
+                    document.getElementById('totalUsers').textContent = formatNumber(users.length);
+                    document.getElementById('activeUsers').textContent = formatNumber(users.filter(u => u.status === 'Active').length);
+                    document.getElementById('inactiveUsers').textContent = formatNumber(users.filter(u => u.status === 'Inactive').length);
                 }
 
                 // Call function when page loads

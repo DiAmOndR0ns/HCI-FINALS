@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pharmacy Inventory Dashboard</title>
+    <title>Purchases - Pharmacy Inventory</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <script src="data.js"></script>
@@ -27,20 +27,6 @@
         /* Main Content Styles */
         .main-content { background-color: #f5f2e3; padding: 30px; position: relative; overflow: hidden; }
 
-        /* Background Icon Overlay */
-        .background-icon-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 70%;
-            height: 70%;
-            background-color: #b8c4ae;
-            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm289-106.6C321.4 126.9 352 135.9 352 176c0 31.8-11.8 45-20.5 56.4c-4.9 6.2-9.2 12.8-13 19.8c-20 37.9-20 84.1-20 122.9V416H184V375c0-38.9 0-85.1-20-122.9c-3.8-7-8.1-13.6-13-19.8C140 221 128 207.8 128 176c0-40.1 30.6-49.1 63-76.8c32.4-27.7 77-27.7 109.4 0zm10.7-33.4C261 144.3 226.7 144.3 200 171.8c-26.7 27.5-63 24.3-63 60.2c0 14.5 4.3 25.1 8.8 33.3c7.2 13.1 16.5 25.5 27.8 36.8c11.3 11.3 23.7 20.6 36.8 27.8c8.2 4.5 18.8 8.8 33.3 8.8h.2c1.7 0 3.4 0 5.1-.1v-48c0-13.3 10.7-24 24-24s24 10.7 24 24v48c1.7 0 3.4 0 5.1.1h.2c14.5 0 25.1-4.3 33.3-8.8c13.1-7.2 25.5-16.5 36.8-27.8c11.3-11.3 20.6-23.7 27.8-36.8c4.5-8.2 8.8-18.8 8.8-33.3c0-35.9-36.3-32.7-63-60.2c-26.7-27.5-61-27.5-87.7 0z"/></svg>');
-            opacity: 0.4;
-            pointer-events: none;
-        }
-        
         /* --- Purchase Order Styles --- */
         .po-header {
             font-size: 2em;
@@ -250,7 +236,6 @@
     </style>
 </head>
 <body>
-    <div class="watermark-bg" aria-hidden="true"></div>
     <div class="dashboard-container">
         <aside class="sidebar">
             <div class="user-profile">
@@ -281,16 +266,16 @@
 
                 <div class="po-metrics">
                     <div class="po-orders-count">
-                        <p class="metric-card-title">Open Purchase Orders <i class="fas fa-question-circle"></i></p>
-                        <h2>9</h2>
+                        <p class="metric-card-title">Total Purchase Orders <i class="fas fa-question-circle"></i></p>
+                        <h2 id="totalPOs">0</h2>
                     </div>
                     <div class="metric-card">
-                        <p class="metric-card-title">Open PO Cost</p>
-                        <h2>9,999.00</h2>
+                        <p class="metric-card-title">Total PO Cost</p>
+                        <h2 id="totalPOCost">₱0.00</h2>
                     </div>
                     <div class="metric-card">
-                        <p class="metric-card-title">Open PO Units</p>
-                        <h2>999.00</h2>
+                        <p class="metric-card-title">Total PO Units</p>
+                        <h2 id="totalPOUnits">0</h2>
                     </div>
                 </div>
 
@@ -370,14 +355,21 @@
                         <td><a href="#" class="po-name-link">${purchase.poNumber}</a></td>
                         <td>${purchase.type}</td>
                         <td>${purchase.supplier}</td>
-                        <td>${purchase.quantity}</td>
-                        <td>₱${purchase.totalCost.toFixed(2)}</td>
+                        <td>${formatNumber(purchase.quantity)}</td>
+                        <td>${formatCurrency(purchase.totalCost)}</td>
                         <td>${purchase.poDate}</td>
                         <td>${purchase.estimatedArrival}</td>
                         <td><span class="status-badge ${statusClass}">${purchase.status}</span></td>
                     `;
                     tableBody.appendChild(row);
                 });
+
+                // Update metrics
+                const totalCost = purchases.reduce((sum, p) => sum + p.totalCost, 0);
+                const totalUnits = purchases.reduce((sum, p) => sum + p.quantity, 0);
+                document.getElementById('totalPOs').textContent = purchases.length;
+                document.getElementById('totalPOCost').textContent = formatCurrency(totalCost);
+                document.getElementById('totalPOUnits').textContent = formatNumber(totalUnits);
             }
 
             // Call function when page loads

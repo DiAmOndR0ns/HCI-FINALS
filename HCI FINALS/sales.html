@@ -42,7 +42,6 @@
 </head>
 
 <body>
-    <div class="watermark-bg" aria-hidden="true"></div>
     <div class="dashboard-container">
         <aside class="sidebar">
             <div class="user-profile">
@@ -67,6 +66,11 @@
 
         <div class="main-content">
             <h1 style="color: #333; margin-bottom: 10px;">Sales Records</h1>
+            <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;">
+                <button id="downloadCsvBtn" style="background:#0E6B48;color:#fff;border:0;padding:8px 12px;border-radius:6px;cursor:pointer;">Download CSV</button>
+                <button id="downloadJsonBtn" style="background:#013A28;color:#fff;border:0;padding:8px 12px;border-radius:6px;cursor:pointer;">Export JSON</button>
+                <small style="color:#666;margin-left:8px;">(Exports current sales table)</small>
+            </div>
             <div class="sales-table-container">
                 <table class="sales-table">
                     <thead>
@@ -134,13 +138,72 @@
                             <td>${sale.date}</td>
                             <td>${sale.itemName}</td>
                             <td>${sale.quantity}</td>
-                            <td>₱${sale.unitPrice.toFixed(2)}</td>
-                            <td style="font-weight: bold; color: #0E6B48;">₱${sale.total.toFixed(2)}</td>
+                            <td>${formatCurrency(sale.unitPrice)}</td>
+                            <td style="font-weight: bold; color: #0E6B48;">${formatCurrency(sale.total)}</td>
                             <td>${sale.cashier}</td>
                         `;
                         tableBody.appendChild(row);
                     });
                 }
+
+                // Hook download buttons
+                function salesArrayForExport() {
+                    // Return a mapped array suitable for export (keep raw numeric values for CSV)
+                    return sales.map(s => ({
+                        date: s.date,
+                        itemName: s.itemName,
+                        quantity: s.quantity,
+                        unitPrice: Number(s.unitPrice),
+                        total: Number(s.total),
+                        cashier: s.cashier
+                    }));
+                }
+
+                function toCSV(rows) {
+                    if (!rows || !rows.length) return '';
+                    const header = Object.keys(rows[0]);
+                    const escape = v => '"' + String(v).replace(/"/g, '""') + '"';
+                    const lines = [header.map(escape).join(',')];
+                    for (const r of rows) {
+                        const vals = header.map(h => {
+                            const v = r[h];
+                            // For currency fields format to 2 decimals but keep numeric
+                            if (h === 'unitPrice' || h === 'total') return Number(v).toFixed(2);
+                            return v;
+                        });
+                        lines.push(vals.map(escape).join(','));
+                    }
+                    return lines.join('\n');
+                }
+
+                function downloadBlob(content, filename, mime) {
+                    const blob = new Blob([content], { type: mime || 'text/csv;charset=utf-8;' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    setTimeout(() => {
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    }, 100);
+                }
+
+                document.getElementById('downloadCsvBtn').addEventListener('click', () => {
+                    const rows = salesArrayForExport();
+                    const csv = toCSV(rows);
+                    const now = new Date();
+                    const fname = `sales-report-${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}.csv`;
+                    downloadBlob(csv, fname, 'text/csv;charset=utf-8;');
+                });
+
+                document.getElementById('downloadJsonBtn').addEventListener('click', () => {
+                    const rows = salesArrayForExport();
+                    const now = new Date();
+                    const fname = `sales-report-${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}.json`;
+                    downloadBlob(JSON.stringify(rows, null, 2), fname, 'application/json');
+                });
 
                 // Call function when page loads
                 populateSalesTable();

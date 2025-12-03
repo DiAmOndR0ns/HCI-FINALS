@@ -4,14 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pharmacy Dashboard 2.0</title>
+    <title>Pharmacy Dashboard</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="data.js"></script>
 </head>
 
 <body>
-    <div class="watermark-bg" aria-hidden="true"></div>
     <div class="dashboard-container">
         <aside class="sidebar">
             <div class="user-profile">
@@ -45,9 +44,9 @@
                     <p class="card-value" id="totalItems">0</p>
                 </div>
                 <div class="card card-green">
-                    <div class="card-icon"><i class="fas fa-dollar-sign"></i></div>
+                    <div class="card-icon"><i class="fas fa-peso-sign"></i></div>
                     <p class="card-label">Total Sales</p>
-                    <p class="card-value" id="totalSales">$0</p>
+                    <p class="card-value" id="totalSales">₱0</p>
                 </div>
                 <div class="card card-lime">
                     <div class="card-icon"><i class="fas fa-users"></i></div>
@@ -79,7 +78,7 @@
             try {
                 if (typeof dashboardStats !== 'undefined') {
                     document.getElementById('totalItems').textContent = dashboardStats.totalItems;
-                    document.getElementById('totalSales').textContent = '$' + dashboardStats.totalSales.toFixed(2);
+                    document.getElementById('totalSales').textContent = formatCurrency(dashboardStats.totalSales);
                     document.getElementById('activeUsers').textContent = dashboardStats.activeUsers;
                     document.getElementById('lowStock').textContent = dashboardStats.lowStockItems.length;
                     document.getElementById('nearExpiry').textContent = dashboardStats.nearExpiryProducts;
